@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author admin
  */
-public class DateHelper {
+public class XDate {
     static final SimpleDateFormat DATE_FORMATER = new SimpleDateFormat("MM/dd/yyyy");
     
     // convert String to Date
@@ -23,7 +23,7 @@ public class DateHelper {
                 DATE_FORMATER.applyPattern(pattern[0]);
             }
             if(date == null){
-                return DateHelper.now();
+                return XDate.now();
             }
             return DATE_FORMATER.parse(date);
         } catch (ParseException ex) {
@@ -37,7 +37,7 @@ public class DateHelper {
             DATE_FORMATER.applyPattern(pattern[0]);
         }
         if(date == null){
-            date = DateHelper.now();
+            date = XDate.now();
         }
         return DATE_FORMATER.format(date);
     }
@@ -55,7 +55,7 @@ public class DateHelper {
     
     // bổ sung số ngày vào thời gian hiện hành
     public static Date add(int days){
-        Date now = DateHelper.now();
+        Date now = XDate.now();
         now.setTime(now.getTime() + days * 24 * 60 * 1000);
         return now;
     }
