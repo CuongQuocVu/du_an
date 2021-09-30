@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.polypro.helper;
+import java.sql.Connection;
 
 /**
  *
@@ -22,9 +23,7 @@ public class JBDC_Helper {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
-    
+    }    
     // xây dựng prepared statement
-    
     
 }
