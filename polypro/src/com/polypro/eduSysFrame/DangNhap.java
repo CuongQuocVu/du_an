@@ -14,6 +14,7 @@ public class DangNhap extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame
      */
+    
     public DangNhap() {
         initComponents();
         setLocationRelativeTo(null);
