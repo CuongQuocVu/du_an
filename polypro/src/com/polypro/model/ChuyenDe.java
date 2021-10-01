@@ -16,6 +16,7 @@ public class ChuyenDe {
     private String hinh, moTa;
 
     public ChuyenDe() {
+        
     }
 
     public ChuyenDe(String maCD, String tenCD, double hocPhi, int thoiLuong, String hinh, String moTa) {
