@@ -61,7 +61,7 @@ public class NguoiHoc {
         this.ngaySinh = ngaySinh;
     }
 
-    public boolean isGioiTinh() {
+    public boolean getGioiTinh() {
         return gioiTinh;
     }
 

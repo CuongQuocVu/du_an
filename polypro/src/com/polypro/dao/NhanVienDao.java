@@ -21,24 +21,27 @@ import java.util.List;
  */
 public class NhanVienDao {
     
-    private void insert(NhanVien model){
+    public void insert(NhanVien model){
         String sql = "INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)";
         JBDC_Helper.excuteUpdate(sql, model.getMaNV(), model.getMatKhau(), model.getHoTen(), model.getVaiTro());
     }
-    private void update(NhanVien model){
+    
+    public void update(NhanVien model){
         String sql = "UPDATE NhanVien SET MatKhau=?, HoTen=?, VaiTro=? WHERE MaNV=?";
         JBDC_Helper.excuteUpdate(sql, model.getMatKhau(), model.getHoTen(), model.getVaiTro(), model.getMaNV());
     }
-    private void delete(String MaNV){
+    
+    public void delete(String MaNV){
         String sql = "DELETE FROM NhanVien WHERE MaNV=?";
         JBDC_Helper.excuteUpdate(sql, MaNV);
     }
-    private List<NhanVien> select(){
+    
+    public List<NhanVien> select(){
         String sql = "SELECT * FROM NhanVien";
         return select(sql);
     }
     
-    private NhanVien findById(String MaNV){
+    public NhanVien findById(String MaNV){
         String sql = "SELECT * FROM NhanVien WHERE MaNV=?";
         List<NhanVien> listNV = select(sql, MaNV);
         return listNV.size() > 0 ?  listNV.get(0) : null;

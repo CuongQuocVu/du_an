@@ -81,7 +81,8 @@ FOREIGN KEY (MaNH) REFERENCES NguoiHoc(MaNH) ON UPDATE CASCADE
 ------ chuyen de -------------
 --Thêm mới
 	INSERT INTO ChuyenDe (MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) VALUES (?, ?,?, ?, ?, ?)
---Cập nhật theo mã UPDATE ChuyenDe SET TenCD=?, HocPhi=?, ThoiLuong=?, Hinh=?, MoTa=? WHERE MaCD=?
+--Cập nhật theo mã 
+	UPDATE ChuyenDe SET TenCD=?, HocPhi=?, ThoiLuong=?, Hinh=?, MoTa=? WHERE MaCD=?
 --Xóa theo mã 
 	DELETE FROM ChuyenDe WHERE MaCD=?
 --Truy vấn tất cả 
