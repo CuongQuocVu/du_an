@@ -16,10 +16,11 @@ public class NhanVien {
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String matKhau, String hoTen) {
+    public NhanVien(String maNV, String matKhau, String hoTen, boolean vaiTro) {
         this.maNV = maNV;
         this.matKhau = matKhau;
         this.hoTen = hoTen;
+        this.vaiTro = vaiTro;
     }
 
     public String getMaNV() {
@@ -46,7 +47,7 @@ public class NhanVien {
         this.hoTen = hoTen;
     }
 
-    public boolean isVaiTro() {
+    public boolean getVaiTro() {
         return vaiTro;
     }
 
