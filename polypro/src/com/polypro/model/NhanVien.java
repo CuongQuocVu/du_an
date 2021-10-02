@@ -11,7 +11,7 @@ package com.polypro.model;
  */
 public class NhanVien {
     private String maNV, matKhau, hoTen;
-    private boolean vaiTro = false;
+    private boolean vaiTro;
 
     public NhanVien() {
     }
@@ -55,10 +55,10 @@ public class NhanVien {
         this.vaiTro = vaiTro;
     }
 
-    @Override
-    public String toString() {
-        return this.hoTen;
-    }
+    // @Override
+    // public String toString() {
+    //     return this.hoTen;
+    // }
     
     
 }

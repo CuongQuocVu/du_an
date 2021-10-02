@@ -21,12 +21,12 @@ public class NguoiHoc {
     private String email;
     private String ghiChu;
     private String maNV;
-    private Date ngayDK = XDate.now();
+    private Date ngayDK;
 
     public NguoiHoc() {
     }
 
-    public NguoiHoc(String maNH, String hoTen, Date ngaySinh, boolean gioiTinh, String dienThoai, String email, String ghiChu, String maNV) {
+    public NguoiHoc(String maNH, String hoTen, Date ngaySinh, boolean gioiTinh, String dienThoai, String email, String ghiChu, String maNV, Date ngayDK) {
         this.maNH = maNH;
         this.hoTen = hoTen;
         this.ngaySinh = ngaySinh;
@@ -35,6 +35,7 @@ public class NguoiHoc {
         this.email = email;
         this.ghiChu = ghiChu;
         this.maNV = maNV;
+        this.ngayDK = ngayDK;
     }
 
     public String getMaNH() {

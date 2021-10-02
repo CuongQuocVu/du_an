@@ -20,12 +20,12 @@ public class KhoaHoc {
     private Date ngayKG;
     private String ghiChu;
     private String maNv;
-    private Date ngayTao = XDate.now();
+    private Date ngayTao;
 
     public KhoaHoc() {
     }
 
-    public KhoaHoc(int maKh, String maCD, double hocPhi, int thoiLuonog, Date ngayKG, String ghiChu, String maNv) {
+    public KhoaHoc(int maKh, String maCD, double hocPhi, int thoiLuonog, Date ngayKG, String ghiChu, String maNv, Date ngayTao) {
         this.maKh = maKh;
         this.maCD = maCD;
         this.hocPhi = hocPhi;
@@ -33,6 +33,7 @@ public class KhoaHoc {
         this.ngayKG = ngayKG;
         this.ghiChu = ghiChu;
         this.maNv = maNv;
+        this.ngayTao = ngayTao;
     }
 
     @Override

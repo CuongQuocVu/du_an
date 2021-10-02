@@ -13,21 +13,22 @@ public class HocVien {
     private int maHV;
     private int maKH;
     private String maNH;
-    private double diem = -1.0;
+    private double diem;
 
     public HocVien() {
     }
 
-    public HocVien(int maHV, int maKH, String maNH) {
+    public HocVien(int maHV, int maKH, String maNH, double diem) {
         this.maHV = maHV;
         this.maKH = maKH;
         this.maNH = maNH;
+        this.diem = diem;
     }
 
-    @Override
-    public String toString() {
-        return this.toString();
-    }
+    // @Override
+    // public String toString() {
+    //     return this.toString();
+    // }
 
     public int getMaHV() {
         return maHV;

@@ -48,9 +48,9 @@
                       <Component id="jLabel3" min="-2" pref="97" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" pref="97" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnDangNhap" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnKetThuc" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="txtTenDangNhap" alignment="0" max="32767" attributes="0"/>
                       <Component id="txtMatKhau" alignment="0" pref="271" max="32767" attributes="0"/>
@@ -77,8 +77,8 @@
                           <Component id="txtMatKhau" linkSize="2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jButton1" linkSize="3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jButton2" linkSize="3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDangNhap" linkSize="3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnKetThuc" linkSize="3" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -115,20 +115,20 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtMatKhau">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnDangNhap">
           <Properties>
             <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng nh&#x1ead;p"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDangNhapActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="btnKetThuc">
           <Properties>
             <Property name="text" type="java.lang.String" value="K&#x1ebf;t th&#xfa;c"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnKetThucActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

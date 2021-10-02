@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class JBDC_Helper {
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    private static String url = "jdbc:sqlserver://localhost:1433;databaseName=polypro";
+    private static String url = "jdbc:sqlserver://localhost:1433;databaseName=EduSys";
     private static String username = "sa";
     private static String password = "123";
     
@@ -29,7 +29,7 @@ public class JBDC_Helper {
         }
     }    
     // xây dựng prepared statement
-    public static PreparedStatement preparedStatement (String sql, Object...args) throws SQLException{
+    public static PreparedStatement preparedStatement(String sql, Object...args) throws SQLException{
         Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement pstm = null;
         if(sql.trim().startsWith("{")){
@@ -43,11 +43,11 @@ public class JBDC_Helper {
         return pstm;
     }
     // cau lenh exxcuteUpdate
-    public static void excuteUpdate(String sql, Object...args){
+    public static int excuteUpdate(String sql, Object...args){
         try {
-            PreparedStatement pstm = preparedStatement(sql, args);
+            PreparedStatement pstm = JBDC_Helper.preparedStatement(sql, args);
             try{
-                pstm.executeUpdate();
+                return pstm.executeUpdate();
             } 
             finally{
                 pstm.getConnection().close();
@@ -59,10 +59,24 @@ public class JBDC_Helper {
     // cau lenh select 
     public static ResultSet excuteQuery(String sql, Object...args){
         try {
-            PreparedStatement pstm = preparedStatement(sql, args);
+            PreparedStatement pstm = JBDC_Helper.preparedStatement(sql, args);
             return pstm.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException();
+        }
+    }
+    
+    // câu lệnh value
+    public static Object value(String sql, Object...args){
+        try {
+            ResultSet rs = JBDC_Helper.excuteQuery(sql, args);
+            if(rs.next()){
+                return rs.getObject(0);
+            }
+            rs.getStatement().getConnection().close();
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
