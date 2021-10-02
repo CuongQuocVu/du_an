@@ -215,7 +215,7 @@ public class DangNhap extends javax.swing.JFrame {
                     ShareHelper.USER = nhanvien;
                     DialogHelper.alert(this, "Đăng nhập thành công");
                     this.dispose();
-                    JFrame main = new Main();
+                    JFrame main = new MainMenu();
                     main.setVisible(true);
                 } else{
                     DialogHelper.alert(this, "Sai mật khẩu");
