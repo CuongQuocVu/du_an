@@ -13,6 +13,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
@@ -54,11 +55,11 @@ public class ChaoJDialog extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lb_Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(lb_Icon, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lb_Icon, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+            .addComponent(lb_Icon, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -131,8 +132,8 @@ public class ChaoJDialog extends javax.swing.JFrame {
 
     private void setIcon() {
         try {
-            String path = "src/com/polypro/icon/logo.png";
-            ImageIcon icon = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(615, 340, 0));
+            String path = "src/com/EduSys/icon/logo.png";
+            ImageIcon icon = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(512, 340, 0));
             lb_Icon.setIcon(icon);
         } catch (Exception e) {
             System.out.println("fptlogo can't load");
@@ -140,19 +141,22 @@ public class ChaoJDialog extends javax.swing.JFrame {
         }
 
     }
-
+    Timer timer;
     private void loadingBar() {
         int delay = 1000;
-        Timer timer = new Timer(delay, new ActionListener(){
+        timer = new Timer(delay, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 int value = pb_LoadingBar.getValue();
-                if(value<100){
+                if(value < 100){
                 pb_LoadingBar.setValue(value+ 7);    
                 pb_LoadingBar.setValue(value+ 3);    
                 pb_LoadingBar.setValue(value+ 23);    
                 }else{
                     ChaoJDialog.this.dispose();
+                    timer.stop();
+                    JFrame login = new DangNhap();
+                    login.setVisible(true);
                 }
             }
         });
