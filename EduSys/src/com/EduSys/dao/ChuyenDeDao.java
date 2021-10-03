@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.EduSys.helper.JBDC_Helper;
+import com.EduSys.helper.JDBC_Helper;
 import com.EduSys.model.ChuyenDe;
 
 /**
@@ -19,19 +19,19 @@ import com.EduSys.model.ChuyenDe;
 public class ChuyenDeDao {
     public void insert(ChuyenDe model){
         String sql = "INSERT INTO ChuyenDe (MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) VALUES (?, ?,?, ?, ?, ?)";
-        JBDC_Helper.excuteUpdate(sql, model.getMaCD(), model.getTenCD(), model.getHocPhi(), model.getThoiLuong(),
+        JDBC_Helper.executeUpdate(sql, model.getMaCD(), model.getTenCD(), model.getHocPhi(), model.getThoiLuong(),
             model.getHinh(), model.getMoTa());             
     }
 
     public void update(ChuyenDe model){
         String sql = "UPDATE ChuyenDe SET TenCD=?, HocPhi=?, ThoiLuong=?, Hinh=?, MoTa=? WHERE MaCD=?";
-        JBDC_Helper.excuteUpdate(sql, model.getTenCD(), model.getHocPhi(), model.getThoiLuong(), model.getHinh(),
+        JDBC_Helper.executeUpdate(sql, model.getTenCD(), model.getHocPhi(), model.getThoiLuong(), model.getHinh(),
             model.getMoTa(), model.getMaCD());
     }
 
     public void delete(String MaCD){
         String sql = "DELETE FROM ChuyenDe WHERE MaCD=?";
-        JBDC_Helper.excuteUpdate(sql, MaCD);
+        JDBC_Helper.executeUpdate(sql, MaCD);
     }
 
     public List<ChuyenDe> select(){
@@ -61,7 +61,7 @@ public class ChuyenDeDao {
         try {
             ResultSet rs = null;
             try{
-                rs = JBDC_Helper.excuteQuery(sql, args);
+                rs = JDBC_Helper.executeQuery(sql, args);
                 while(rs.next()){
                     ChuyenDe model = readFromResultSet(rs);
                     listCD.add(model);

@@ -14,7 +14,7 @@ import java.sql.SQLException;
  *
  * @author admin
  */
-public class JBDC_Helper {
+public class JDBC_Helper {
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static String url = "jdbc:sqlserver://localhost:1433;databaseName=EduSys";
     private static String username = "sa";
@@ -43,9 +43,9 @@ public class JBDC_Helper {
         return pstm;
     }
     // cau lenh exxcuteUpdate
-    public static int excuteUpdate(String sql, Object...args){
+    public static int executeUpdate(String sql, Object...args){
         try {
-            PreparedStatement pstm = JBDC_Helper.preparedStatement(sql, args);
+            PreparedStatement pstm = JDBC_Helper.preparedStatement(sql, args);
             try{
                 return pstm.executeUpdate();
             } 
@@ -57,9 +57,9 @@ public class JBDC_Helper {
         }
     }
     // cau lenh select 
-    public static ResultSet excuteQuery(String sql, Object...args){
+    public static ResultSet executeQuery(String sql, Object...args){
         try {
-            PreparedStatement pstm = JBDC_Helper.preparedStatement(sql, args);
+            PreparedStatement pstm = JDBC_Helper.preparedStatement(sql, args);
             return pstm.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException();
@@ -69,7 +69,7 @@ public class JBDC_Helper {
     // câu lệnh value
     public static Object value(String sql, Object...args){
         try {
-            ResultSet rs = JBDC_Helper.excuteQuery(sql, args);
+            ResultSet rs = JDBC_Helper.executeQuery(sql, args);
             if(rs.next()){
                 return rs.getObject(0);
             }

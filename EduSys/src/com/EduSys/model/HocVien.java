@@ -10,6 +10,7 @@ package com.EduSys.model;
  * @author admin
  */
 public class HocVien {
+
     private int maHV;
     private int maKH;
     private String maNH;
@@ -25,10 +26,10 @@ public class HocVien {
         this.diem = diem;
     }
 
-    // @Override
-    // public String toString() {
-    //     return this.toString();
-    // }
+    @Override
+    public String toString() {
+        return this.toString();
+    }
 
     public int getMaHV() {
         return maHV;
@@ -61,6 +62,5 @@ public class HocVien {
     public void setDiem(double diem) {
         this.diem = diem;
     }
-    
-    
+
 }

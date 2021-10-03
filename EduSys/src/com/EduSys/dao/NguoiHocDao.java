@@ -5,7 +5,7 @@
  */
 package com.EduSys.dao;
 
-import com.EduSys.helper.JBDC_Helper;
+import com.EduSys.helper.JDBC_Helper;
 import com.EduSys.model.NguoiHoc;
 
 /**

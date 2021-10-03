@@ -5,7 +5,7 @@
  */
 package com.EduSys.dao;
 
-import com.EduSys.helper.JBDC_Helper;
+import com.EduSys.helper.JDBC_Helper;
 import com.EduSys.model.NhanVien;
 
 import java.sql.ResultSet;
@@ -21,17 +21,17 @@ public class NhanVienDao {
 
     public void insert(NhanVien model) {
         String sql = "INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)";
-        JBDC_Helper.excuteUpdate(sql, model.getMaNV(), model.getMatKhau(), model.getHoTen(), model.getVaiTro());
+        JDBC_Helper.executeUpdate(sql, model.getMaNV(), model.getMatKhau(), model.getHoTen(), model.getVaiTro());
     }
 
     public void update(NhanVien model) {
         String sql = "UPDATE NhanVien SET MatKhau=?, HoTen=?, VaiTro=? WHERE MaNV=?";
-        JBDC_Helper.excuteUpdate(sql, model.getMatKhau(), model.getHoTen(), model.getVaiTro(), model.getMaNV());
+        JDBC_Helper.executeUpdate(sql, model.getMatKhau(), model.getHoTen(), model.getVaiTro(), model.getMaNV());
     }
 
     public void delete(String MaNV) {
         String sql = "DELETE FROM NhanVien WHERE MaNV=?";
-        JBDC_Helper.excuteUpdate(sql, MaNV);
+        JDBC_Helper.executeUpdate(sql, MaNV);
     }
 
     private List<NhanVien> select(String sql, Object args) {
@@ -39,7 +39,7 @@ public class NhanVienDao {
         try {
             ResultSet rs = null;
             try {
-                rs = JBDC_Helper.excuteQuery(sql, args);
+                rs = JDBC_Helper.executeQuery(sql, args);
                 while (rs.next()) {
                     NhanVien model = readFromResultSet(rs);
                     listNV.add(model);
