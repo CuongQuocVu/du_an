@@ -5,6 +5,11 @@
  */
 package com.EduSys.UI;
 
+import com.EduSys.dao.NhanVienDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.model.NhanVien;
+
+
 /**
  *
  * @author admin
@@ -334,4 +339,43 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaNhanVien;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
+
+    private void them() {
+        NhanVienDao nvDAO = new NhanVienDao();
+        String maNV = this.txtMaNhanVien.getText();
+        String tenNV = this.txtHoVaTen.getText();
+        String matKhau = new String(this.txtPassword.getPassword());
+        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());
+        boolean vaiTro = rdoTruongPhong.isSelected() ? true : false;
+        //int vaiTroNV = vaiTro==false ? 0 : 1;
+
+        NhanVien model = new NhanVien(maNV, matKhau, tenNV, vaiTro);
+
+        if (matKhau.equals(xacNhanMK)) {
+            try {
+                nvDAO.insert(model);
+                DialogHelper.alert(this, "Thêm mới thành công");
+                this.clear();
+            } catch (Exception e) {
+                e.printStackTrace();
+                DialogHelper.alert(this, "Thêm mới thất bại");
+            }
+        } else {
+            DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
+        }
+
+    }
+
+    private void clear() {
+        txtConfirmPassword.setText("");
+        txtHoVaTen.setText("");
+        txtMaNhanVien.setText("");
+        txtPassword.setText("");
+        rdoNhanVien.setSelected(true);
+    }
+    
+    private void update(){
+        
+    }
+
 }
