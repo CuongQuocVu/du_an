@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/vq_CC/Documents/GitHub/du_an/EduSys/src/com/EduSys/UI/MainMenu.java</file>
+            <file>file:/C:/Users/vq_CC/Documents/GitHub/du_an/EduSys/src/com/EduSys/dao/HocVienDao.java</file>
+            <file>file:/C:/Users/vq_CC/Documents/GitHub/du_an/EduSys/src/com/EduSys/dao/ThongKeDao.java</file>
+            <file>file:/C:/Users/vq_CC/Documents/GitHub/du_an/EduSys/src/com/EduSys/dao/NhanVienDao.java</file>
+            <file>file:/C:/Users/vq_CC/Documents/GitHub/du_an/EduSys/src/com/EduSys/model/HocVien.java</file>
         </group>
     </open-files>
 </project-private>
