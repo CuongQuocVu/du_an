@@ -376,6 +376,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     
     private void update(){
         String a = null;
+        String b = null;
     }
 
 }
