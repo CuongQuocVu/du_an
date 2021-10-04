@@ -62,7 +62,7 @@ public class NhanVienDao {
         return model;
     }
 
-    public NhanVien findById(String MaNV) {
+    public NhanVien findByID(String MaNV) {
         String sql = "SELECT * FROM NhanVien WHERE MaNV=?";
         List<NhanVien> listNV = select(sql, MaNV);
         if(listNV.isEmpty()){
