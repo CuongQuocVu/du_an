@@ -64,6 +64,7 @@ create table HocVien
 )
 go
 
+select * from HocVien
 
 INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES ('NV01','123' , N'Nguyễn Văn A', 0)
 select * from NhanVien

@@ -13,26 +13,26 @@ import java.util.Date;
  * @author admin
  */
 public class KhoaHoc {
-    private int maKh;
+    private int maKH;
     private String maCD;
     private double hocPhi;
-    private int thoiLuonog;
+    private int thoiLuong;
     private Date ngayKG;
     private String ghiChu;
-    private String maNv;
+    private String maNV;
     private Date ngayTao;
 
     public KhoaHoc() {
     }
 
-    public KhoaHoc(int maKh, String maCD, double hocPhi, int thoiLuonog, Date ngayKG, String ghiChu, String maNv, Date ngayTao) {
-        this.maKh = maKh;
+    public KhoaHoc(int maKH, String maCD, double hocPhi, int thoiLuong, Date ngayKG, String ghiChu, String maNV, Date ngayTao) {
+        this.maKH = maKH;
         this.maCD = maCD;
         this.hocPhi = hocPhi;
-        this.thoiLuonog = thoiLuonog;
+        this.thoiLuong = thoiLuong;
         this.ngayKG = ngayKG;
         this.ghiChu = ghiChu;
-        this.maNv = maNv;
+        this.maNV = maNV;
         this.ngayTao = ngayTao;
     }
 
@@ -41,12 +41,12 @@ public class KhoaHoc {
         return this.maCD + "(" + this.ngayKG +")";
     }
 
-    public int getMaKh() {
-        return maKh;
+    public int getMaKH() {
+        return maKH;
     }
 
-    public void setMaKh(int maKh) {
-        this.maKh = maKh;
+    public void setMaKH(int maKH) {
+        this.maKH = maKH;
     }
 
     public String getMaCD() {
@@ -65,12 +65,12 @@ public class KhoaHoc {
         this.hocPhi = hocPhi;
     }
 
-    public int getThoiLuonog() {
-        return thoiLuonog;
+    public int getThoiLuong() {
+        return thoiLuong;
     }
 
-    public void setThoiLuonog(int thoiLuonog) {
-        this.thoiLuonog = thoiLuonog;
+    public void setThoiLuong(int thoiLuong) {
+        this.thoiLuong = thoiLuong;
     }
 
     public Date getNgayKG() {
@@ -89,12 +89,12 @@ public class KhoaHoc {
         this.ghiChu = ghiChu;
     }
 
-    public String getMaNv() {
-        return maNv;
+    public String getMaNV() {
+        return maNV;
     }
 
-    public void setMaNv(String maNv) {
-        this.maNv = maNv;
+    public void setMaNV(String maNV) {
+        this.maNV = maNV;
     }
 
     public Date getNgayTao() {

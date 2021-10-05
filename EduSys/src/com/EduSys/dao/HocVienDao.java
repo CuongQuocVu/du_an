@@ -41,7 +41,7 @@ public class HocVienDao {
                 MaHV);
     }
 
-    public List<HocVien> select() {
+    public List<HocVien> selectAll() {
         String sql = "SELECT * FROM HocVien";
         return select(sql);
     }

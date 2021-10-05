@@ -34,7 +34,7 @@ public class ChuyenDeDao {
         JDBC_Helper.executeUpdate(sql, MaCD);
     }
 
-    public List<ChuyenDe> select(){
+    public List<ChuyenDe> selectAll(){
         String sql = "SELECT * FROM ChuyenDe";
         return select(sql);
     }
