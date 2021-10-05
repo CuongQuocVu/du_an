@@ -5,6 +5,12 @@
  */
 package com.EduSys.UI;
 
+import com.EduSys.dao.NhanVienDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.model.NhanVien;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author admin
@@ -15,8 +21,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
      * Creates new form QuanLyNhanVien
      */
     public QuanLyNhanVien() {
-        initComponents();
-        setLocationRelativeTo(null);
+        initComponents();        
     }
 
     /**
@@ -334,4 +339,79 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaNhanVien;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
+    
+    NhanVienDao nvDAO = new NhanVienDao();
+    
+    void init(){
+        setLocationRelativeTo(null);
+        this.fillToTable();
+        this.clear();
+        
+    }
+    private void fillToTable(){
+        DefaultTableModel model = (DefaultTableModel) this.tblQLNV.getModel();
+        model.setRowCount(0);
+        try {
+            List<NhanVien> litNV = nvDAO.selectAll();
+            for(NhanVien nv : litNV){
+                Object [] row = new Object[]{
+                    nv.getMaNV(),
+                    nv.getMatKhau(),
+                    nv.getHoTen(),
+                    nv.getVaiTro() ? "Trưởng phòng" : "Nhân viên"
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "lỗi truy vấn dữ liệu");
+        }
+    }
+    private NhanVien getForm() {
+        NhanVien nv = new NhanVien();       
+        nv.setMaNV(this.txtMaNhanVien.getText());
+        nv.setMatKhau(new String(this.txtPassword.getPassword()));
+        nv.setHoTen(this.txtHoVaTen.getText());
+        nv.setVaiTro(rdoTruongPhong.isSelected());
+        return nv;
+    }
+    private void setForm(NhanVien nv){
+        this.txtMaNhanVien.setText(nv.getMaNV());
+        this.txtPassword.setText(nv.getMatKhau());
+        this.txtHoVaTen.setText(nv.getHoTen());
+        this.rdoTruongPhong.setSelected(nv.getVaiTro());
+        this.rdoNhanVien.setSelected(! nv.getVaiTro());
+    }
+
+    private void them() {        
+        NhanVien nv = getForm();
+        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());
+        if (nv.getMatKhau().equals(xacNhanMK)) {
+            try {
+                nvDAO.insert(nv);
+                DialogHelper.alert(this, "Thêm mới thành công");
+                fillToTable();
+                this.clear();
+            } catch (Exception e) {
+                e.printStackTrace();
+                DialogHelper.alert(this, "Thêm mới thất bại");
+            }
+        } else {
+            DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
+        }
+
+    }
+
+    private void clear() {
+        txtConfirmPassword.setText("");
+        txtHoVaTen.setText("");
+        txtMaNhanVien.setText("");
+        txtPassword.setText("");
+        rdoNhanVien.setSelected(true);
+    }
+
+    private void update() {
+        String a = null;
+        String b = null;
+    }
+
 }

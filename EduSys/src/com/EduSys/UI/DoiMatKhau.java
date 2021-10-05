@@ -5,6 +5,12 @@
  */
 package com.EduSys.UI;
 
+import com.EduSys.dao.NhanVienDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
+import com.EduSys.model.NhanVien;
+import java.awt.Color;
+
 /**
  *
  * @author admin
@@ -16,6 +22,48 @@ public class DoiMatKhau extends javax.swing.JFrame {
      */
     public DoiMatKhau() {
         initComponents();
+        init();
+    }
+
+    private void doimatkhau() {
+        NhanVienDao NVDAO = new NhanVienDao();
+        String tendangnhap = txtTenDangNhap.getText();
+        String matkhau = txtMatKhau.getText();
+        String matkhaumoi = txtMKMoi.getText();
+        String xacnhanmatkhau = txtXacNhanMKMoi.getText();
+
+        try {
+            if (tendangnhap.isEmpty() || matkhau.isEmpty() || matkhaumoi.isEmpty() || xacnhanmatkhau.isEmpty()) {
+                DialogHelper.alert(this, "phải nhập đầy đủ các ô dữ liệu ");
+                return;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (matkhau.equals(ShareHelper.USER.getMatKhau())) {
+                if (matkhaumoi.equals(xacnhanmatkhau)) {
+                    ShareHelper.USER.setMatKhau(matkhaumoi);
+                    NVDAO.update(ShareHelper.USER);
+                    DialogHelper.alert(this, "Đổi mật khẩu thành công!!");
+                    this.dispose();
+                } else {
+                    txtMatKhau.setBackground(Color.pink);
+                    DialogHelper.alert(this, "Mật khẩu xác nhận không trùng mật khẩu");
+                }
+
+            } else {
+                txtMatKhau.setBackground(Color.pink);
+                DialogHelper.alert(this, "Mật khẩu cũ nhập không chính xác!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+     public void init(){
+        txtTenDangNhap.setText(ShareHelper.USER.getMaNV());
     }
 
     /**
@@ -57,9 +105,19 @@ public class DoiMatKhau extends javax.swing.JFrame {
 
         btnDongY.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/polypro/icon/Refresh.png"))); // NOI18N
         btnDongY.setText("Đồng ý");
+        btnDongY.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDongYActionPerformed(evt);
+            }
+        });
 
         btnHuyBo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/polypro/icon/No.png"))); // NOI18N
         btnHuyBo.setText("Hủy bỏ");
+        btnHuyBo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyBoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -140,6 +198,16 @@ public class DoiMatKhau extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnDongYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDongYActionPerformed
+        doimatkhau();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDongYActionPerformed
+
+    private void btnHuyBoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyBoActionPerformed
+        this.dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHuyBoActionPerformed
 
     /**
      * @param args the command line arguments
