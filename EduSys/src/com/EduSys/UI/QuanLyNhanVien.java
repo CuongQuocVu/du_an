@@ -5,6 +5,10 @@
  */
 package com.EduSys.UI;
 
+import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+
 import com.EduSys.dao.NhanVienDao;
 import com.EduSys.helper.DialogHelper;
 import com.EduSys.model.NhanVien;
@@ -350,6 +354,35 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         nv.setVaiTro(rdoTruongPhong.isSelected());;
         return nv;
     }
+
+    private void setForm(NhanVien nv){
+        txtMaNhanVien.setText(nv.getMaNV());
+        txtPassword.setText(nv.getMatKhau());
+        txtHoVaTen.setText(nv.getHoTen());
+        txtConfirmPassword.setText(nv.getMatKhau());
+        rdoNhanVien.setSelected(!nv.getVaiTro());
+        rdoTruongPhong.setSelected(nv.getVaiTro());
+    }
+
+    private void fillToTable(){
+        DefaultTableModel model = tblQLNV.getModel();
+        model.setRowCount(0);
+        try {
+            List<NhanVien> lstNV = nvDAO.selectAll();
+            for(NhanVien nv : lstNV){
+                Object [] row = {
+                    nv.getMaNV(), 
+                    nv.getMatKhau(),
+                    nv.getHoTen(), 
+                    nv.getVaiTro() ? "Trưởng phòng" : "Nhân viên"
+                    };
+                    model.addRow(row);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu");
+        }
+    }
+
     private void them() {        
         NhanVien nv = getForm();
         String xacNhanMK = new String(this.txtConfirmPassword.getPassword());              
@@ -357,6 +390,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
             try {
                 nvDAO.insert(nv);
                 DialogHelper.alert(this, "Thêm mới thành công");
+                this.fillToTable();
                 this.clear();
             } catch (Exception e) {
                 e.printStackTrace();
