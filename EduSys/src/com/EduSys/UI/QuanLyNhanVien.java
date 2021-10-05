@@ -365,7 +365,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
 
     private void fillToTable(){
-        DefaultTableModel model = tblQLNV.getModel();
+        DefaultTableModel model = (DefaultTableModel)tblQLNV.getModel();
         model.setRowCount(0);
         try {
             List<NhanVien> lstNV = nvDAO.selectAll();
@@ -411,7 +411,19 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
     
     private void update(){
-        
+        NhanVien nv = getForm();
+        String xacNhanMK = new String(txtPassword.getPassword());
+        try {
+            if(!nv.getMatKhau().equals(xacNhanMK)){
+                DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
+                return;
+            } else{
+                
+            }
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
     }
 
 }

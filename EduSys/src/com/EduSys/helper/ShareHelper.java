@@ -5,16 +5,8 @@
  */
 package com.EduSys.helper;
 
-import javax.swing.ImageIcon;
-
 import com.EduSys.model.NhanVien;
 
-import java.awt.Image;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 /**
  *
  * @author admin
