@@ -10,6 +10,7 @@ import com.EduSys.helper.DialogHelper;
 import com.EduSys.helper.ShareHelper;
 import com.EduSys.model.NhanVien;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,49 +23,12 @@ public class DoiMatKhau extends javax.swing.JFrame {
      */
     public DoiMatKhau() {
         initComponents();
-        init();
+        setLocationRelativeTo(null);
+        //init();
+        setIcon();
     }
 
-    private void doimatkhau() {
-        NhanVienDao NVDAO = new NhanVienDao();
-        String tendangnhap = txtTenDangNhap.getText();
-        String matkhau = txtMatKhau.getText();
-        String matkhaumoi = txtMKMoi.getText();
-        String xacnhanmatkhau = txtXacNhanMKMoi.getText();
-
-        try {
-            if (tendangnhap.isEmpty() || matkhau.isEmpty() || matkhaumoi.isEmpty() || xacnhanmatkhau.isEmpty()) {
-                DialogHelper.alert(this, "phải nhập đầy đủ các ô dữ liệu ");
-                return;
-            }
-        } catch (Exception e) {
-        }
-
-        try {
-            if (matkhau.equals(ShareHelper.USER.getMatKhau())) {
-                if (matkhaumoi.equals(xacnhanmatkhau)) {
-                    ShareHelper.USER.setMatKhau(matkhaumoi);
-                    NVDAO.update(ShareHelper.USER);
-                    DialogHelper.alert(this, "Đổi mật khẩu thành công!!");
-                    this.dispose();
-                } else {
-                    txtMatKhau.setBackground(Color.pink);
-                    DialogHelper.alert(this, "Mật khẩu xác nhận không trùng mật khẩu");
-                }
-
-            } else {
-                txtMatKhau.setBackground(Color.pink);
-                DialogHelper.alert(this, "Mật khẩu cũ nhập không chính xác!");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-     public void init(){
-        txtTenDangNhap.setText(ShareHelper.USER.getMaNV());
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -103,7 +67,6 @@ public class DoiMatKhau extends javax.swing.JFrame {
 
         lblXacNhanMK.setText("Xác nhận mật khẩu mới");
 
-        btnDongY.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/polypro/icon/Refresh.png"))); // NOI18N
         btnDongY.setText("Đồng ý");
         btnDongY.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,7 +74,6 @@ public class DoiMatKhau extends javax.swing.JFrame {
             }
         });
 
-        btnHuyBo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/polypro/icon/No.png"))); // NOI18N
         btnHuyBo.setText("Hủy bỏ");
         btnHuyBo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,4 +220,61 @@ public class DoiMatKhau extends javax.swing.JFrame {
     private javax.swing.JTextField txtTenDangNhap;
     private javax.swing.JPasswordField txtXacNhanMKMoi;
     // End of variables declaration//GEN-END:variables
+    
+     private ImageIcon iconInput(String name){
+        String path = "src/com/EduSys/icon/";
+        ImageIcon icon = new ImageIcon(path+name);
+        return icon;
+    }
+    private void setIcon(){
+        // button dongy
+        String dongY = "Refresh.png";
+        ImageIcon dy = iconInput(dongY);
+        btnDongY.setIcon(dy);
+        
+        //button huy
+        String huy = "No.png";
+        ImageIcon no = iconInput(huy);
+        btnHuyBo.setIcon(no);
+    }
+    private void doimatkhau() {
+        NhanVienDao NVDAO = new NhanVienDao();
+        String tendangnhap = txtTenDangNhap.getText();
+        String matkhau = txtMatKhau.getText();
+        String matkhaumoi = txtMKMoi.getText();
+        String xacnhanmatkhau = txtXacNhanMKMoi.getText();
+
+        try {
+            if (tendangnhap.isEmpty() || matkhau.isEmpty() || matkhaumoi.isEmpty() || xacnhanmatkhau.isEmpty()) {
+                DialogHelper.alert(this, "phải nhập đầy đủ các ô dữ liệu ");
+                return;
+            }
+        } catch (Exception e) {
+        }
+
+        try {
+            if (matkhau.equals(ShareHelper.USER.getMatKhau())) {
+                if (matkhaumoi.equals(xacnhanmatkhau)) {
+                    ShareHelper.USER.setMatKhau(matkhaumoi);
+                    NVDAO.update(ShareHelper.USER);
+                    DialogHelper.alert(this, "Đổi mật khẩu thành công!!");
+                    this.dispose();
+                } else {
+                    txtMatKhau.setBackground(Color.pink);
+                    DialogHelper.alert(this, "Mật khẩu xác nhận không trùng mật khẩu");
+                }
+
+            } else {
+                txtMatKhau.setBackground(Color.pink);
+                DialogHelper.alert(this, "Mật khẩu cũ nhập không chính xác!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+//    public void init(){
+//        txtTenDangNhap.setText(ShareHelper.USER.getMaNV());
+//    }
 }
