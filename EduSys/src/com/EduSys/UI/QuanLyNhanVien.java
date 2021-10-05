@@ -341,18 +341,21 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     NhanVienDao nvDAO = new NhanVienDao();
-    private void getForm(){
-        String maNV = this.txtMaNhanVien.getText();
-        String tenNV = this.txtHoVaTen.getText();
-        String matKhau = new String(this.txtPassword.getPassword());
-        boolean vaiTro = rdoTruongPhong.isSelected() ? true : false;
+
+    private NhanVien getForm(){
+        NhanVien nv = new NhanVien();
+        nv.setMaNV(this.txtMaNhanVien.getText());
+        nv.setMatKhau(new String(this.txtPassword.getPassword()));
+        nv.setHoTen(this.txtHoVaTen.getText());
+        nv.setVaiTro(rdoTruongPhong.isSelected());;
+        return nv;
     }
     private void them() {        
-        
+        NhanVien nv = getForm();
         String xacNhanMK = new String(this.txtConfirmPassword.getPassword());              
-        if (matKhau.equals(xacNhanMK)) {
+        if (nv.getMaNV().equals(xacNhanMK)) {
             try {
-                nvDAO.insert(model);
+                nvDAO.insert(nv);
                 DialogHelper.alert(this, "Thêm mới thành công");
                 this.clear();
             } catch (Exception e) {
