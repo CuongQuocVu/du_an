@@ -340,17 +340,16 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 
-    private void them() {
-        NhanVienDao nvDAO = new NhanVienDao();
+    NhanVienDao nvDAO = new NhanVienDao();
+    private void getForm(){
         String maNV = this.txtMaNhanVien.getText();
         String tenNV = this.txtHoVaTen.getText();
         String matKhau = new String(this.txtPassword.getPassword());
-        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());
         boolean vaiTro = rdoTruongPhong.isSelected() ? true : false;
-        //int vaiTroNV = vaiTro==false ? 0 : 1;
-
-        NhanVien model = new NhanVien(maNV, matKhau, tenNV, vaiTro);
-
+    }
+    private void them() {        
+        
+        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());              
         if (matKhau.equals(xacNhanMK)) {
             try {
                 nvDAO.insert(model);
@@ -375,8 +374,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
     
     private void update(){
-        String a = null;
-        String b = null;
+        
     }
 
 }
