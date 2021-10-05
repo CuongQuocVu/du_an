@@ -146,4 +146,23 @@ public class ThongKeDao {
         }
         return list;
     }
+    
+       public List<Integer> getNamKhaiGiang() {
+        List<Integer> list = new ArrayList<>();
+        try {
+            ResultSet rs = null;
+            try {
+                rs = JDBC_Helper.executeQuery("select distinct year(NgayKG) as nam from KhoaHoc order by year(NgayKG) desc");
+                while (rs.next()) {
+                    int nam = rs.getInt(1);
+                    list.add(nam);
+                }
+            }finally{
+                rs.getStatement().getConnection().close();
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+        return list;
+    }
 }

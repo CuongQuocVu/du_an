@@ -5,37 +5,17 @@
  */
 package com.EduSys.UI;
 
-import com.EduSys.dao.ChuyenDeDao;
-import com.EduSys.dao.EduSysDAO;
-import com.EduSys.dao.KhoaHocDao;
-import com.EduSys.helper.DialogHelper;
-import com.EduSys.helper.ShareHelper;
-import com.EduSys.helper.XDate;
-import com.EduSys.model.ChuyenDe;
-import com.EduSys.model.HocVien;
-import com.EduSys.model.KhoaHoc;
-import java.awt.HeadlessException;
-import java.util.Date;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author admin
  */
 public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
-    int index = 0;
-    KhoaHocDao dao = new KhoaHocDao();
-    ChuyenDeDao cddao = new ChuyenDeDao();
-
     /**
      * Creates new form QuanLyNhanVien
      */
     public QuanLyKhoaHoc() {
         initComponents();
-        //setIconImage(ShareHelper.APP_ICON);
         setLocationRelativeTo(null);
     }
 
@@ -63,7 +43,6 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
         btnMoi = new javax.swing.JButton();
-        btnHocVien = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         btnFirst = new javax.swing.JButton();
         btnPrivios = new javax.swing.JButton();
@@ -115,9 +94,6 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         btnMoi.setText("Mới");
         jPanel2.add(btnMoi);
 
-        btnHocVien.setText("Học Viên");
-        jPanel2.add(btnHocVien);
-
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnFirst.setText("|<");
@@ -152,7 +128,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         pnCapNhatLayout.setHorizontalGroup(
             pnCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnCapNhatLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(147, 147, 147)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -259,7 +235,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
             pnDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnDanhSachLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 927, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnDanhSachLayout.setVerticalGroup(
@@ -299,7 +275,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
         );
 
         pack();
@@ -353,7 +329,6 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFirst;
-    private javax.swing.JButton btnHocVien;
     private javax.swing.JButton btnLast;
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnNext;
@@ -387,144 +362,4 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     private javax.swing.JTextField txtThoiLuong;
     private javax.swing.JTextField txtngaytao;
     // End of variables declaration//GEN-END:variables
-    void init() {
-
-        setLocationRelativeTo(null);
-    }
-
-    void load() {
-        DefaultTableModel model = (DefaultTableModel) tblQLKH.getModel();
-        model.setRowCount(0);
-        try {
-            List<KhoaHoc> list = dao.select();
-            for (KhoaHoc kh : list) {
-                Object[] row = {
-                    kh.getMaKH(),
-                    kh.getMaCD(),
-                    kh.getThoiLuong(),
-                    kh.getHocPhi(),
-                    XDate.toString(kh.getNgayKG()),
-                    kh.getMaNV(),
-                    XDate.toString(kh.getNgayTao())
-                };
-                model.addRow(row);
-            }
-        } catch (Exception e) {
-            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
-        }
-    }
-
-    void insert() {
-        KhoaHoc model = getModel();
-        model.setNgayTao(new Date());
-        try {
-            dao.insert(model);
-            this.load();
-            this.clear();
-            DialogHelper.alert(this, "Thêm mới thành công!");
-        } catch (HeadlessException e) {
-            DialogHelper.alert(this, "Thêm mới thất bại!");
-        }
-    }
-
-    void clear() {
-        KhoaHoc model = new KhoaHoc();
-        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
-        model.setMaCD(chuyenDe.getMaCD());
-        model.setMaNV(ShareHelper.USER.getMaNV());
-        model.setNgayKG(XDate.add(30));
-        model.setNgayTao(XDate.now());
-        this.setModel(model);
-    }
-
-    void edit() {
-        try {
-            Integer makh = (Integer) tblQLKH.getValueAt(this.index, 0);
-            KhoaHoc model = dao.findById(makh);
-            if (model != null) {
-                this.setModel(model);
-                this.setStatus(false);
-            }
-        } catch (Exception e) {
-            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
-
-        }
-    }
-
-    void delete() {
-        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa khóa học này?")) {
-            Integer makh = Integer.valueOf(cbbCD.getToolTipText());
-            try {
-                dao.delete(makh);
-                this.load();
-                this.clear();
-                DialogHelper.alert(this, "Xóa thành công!");
-            } catch (Exception e) {
-                DialogHelper.alert(this, "Xóa thất bại!");
-            }
-        }
-    }
-
-    void setModel(KhoaHoc model) {
-        cbbCD.setToolTipText(String.valueOf(model.getMaKH()));
-        cbbCD.setSelectedItem(cddao.findById(model.getMaCD()));
-        txtNgayKG.setText(XDate.toString(model.getNgayKG()));
-        txtHocPhi.setText(String.valueOf(model.getHocPhi()));
-        txtThoiLuong.setText(String.valueOf(model.getThoiLuong()));
-        lblNguoiTao.setText(model.getMaNV());
-        txtngaytao.setText(XDate.toString(model.getNgayTao()));
-        txtGhiChu.setText(model.getGhiChu());
-    }
-
-    KhoaHoc getModel() {
-        KhoaHoc model = new KhoaHoc();
-        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
-        model.setMaCD(chuyenDe.getMaCD());
-        model.setNgayKG(XDate.toDate(txtNgayKG.getText()));
-        model.setHocPhi(Double.valueOf(txtHocPhi.getText()));
-        model.setThoiLuong(Integer.valueOf(txtThoiLuong.getText()));
-        model.setGhiChu(txtGhiChu.getText());
-        model.setMaNV(ShareHelper.USER.getMaNV());
-        model.setNgayTao(XDate.toDate(txtngaytao.getText()));
-        model.setMaKH(Integer.valueOf(cbbCD.getToolTipText()));
-
-        return model;
-    }
-
-    void setStatus(boolean insertable) {
-        btnThem.setEnabled(insertable);
-        btnSua.setEnabled(!insertable);
-        btnXoa.setEnabled(!insertable);
-        boolean first = this.index > 0;
-        boolean last = this.index < tblQLKH.getRowCount() - 1;
-        btnFirst.setEnabled(!insertable && first);
-        btnPrivios.setEnabled(!insertable && first);
-        btnLast.setEnabled(!insertable && last);
-        btnNext.setEnabled(!insertable && last);
-        btnHocVien.setVisible(!insertable);
-    }
-
-    void selectComboBox() {
-        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
-        txtThoiLuong.setText(String.valueOf(chuyenDe.getThoiLuong()));
-        txtHocPhi.setText(String.valueOf(chuyenDe.getHocPhi()));
-    }
-
-    void openHocVien() {
-        Integer id = Integer.valueOf(cbbCD.getToolTipText());
-        new QuanLyNguoiHoc(id).setVisible(true);
-    }
-
-    void fillComboBox() {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) cbbCD.getModel();
-        model.removeAllElements();
-        try {
-            List<ChuyenDe> list = cddao.selectAll();
-            for (ChuyenDe cd : list) {
-                model.addElement(cd);
-            }
-        } catch (Exception e) {
-            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
-        }
-    }
 }
