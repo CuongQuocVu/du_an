@@ -30,12 +30,12 @@ public class JDBC_Helper {
     }    
     // xây dựng prepared statement
     public static PreparedStatement preparedStatement(String sql, Object...args) throws SQLException{
-        Connection connection = DriverManager.getConnection(url, username, password);
-        PreparedStatement pstm = null;
+        Connection con = DriverManager.getConnection(url, username, password);
+        PreparedStatement pstm;
         if(sql.trim().startsWith("{")){
-            pstm = connection.prepareCall(sql);            
+            pstm = con.prepareCall(sql);            
         } else {
-            pstm = connection.prepareStatement(sql);
+            pstm = con.prepareStatement(sql);
         } 
         for(int i = 0; i < args.length; i++){
             pstm.setObject(i+1, args[i]);
@@ -58,10 +58,10 @@ public class JDBC_Helper {
     }
     // cau lenh select 
     public static ResultSet executeQuery(String sql, Object...args){
-        try {
+        try {            
             PreparedStatement pstm = JDBC_Helper.preparedStatement(sql, args);
             return pstm.executeQuery();
-        } catch (SQLException e) {
+        } catch (SQLException e){
             throw new RuntimeException();
         }
     }
@@ -75,7 +75,7 @@ public class JDBC_Helper {
             }
             rs.getStatement().getConnection().close();
             return null;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

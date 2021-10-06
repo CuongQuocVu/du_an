@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  *
  * @author Sieu Nhan Bay
  */
-public class utilityHelper {
+public class UtilityHelper {
 
     public static String getRank(double diem) {
         String xepLoai = "Xuất sắc";

@@ -210,7 +210,7 @@ public class DangNhap extends javax.swing.JFrame {
         String MatKhau = new String(txtMatKhau.getPassword());
         
         try {
-            NhanVien nhanvien = NVDAO.findByID(tenDangNhap);
+            NhanVien nhanvien = NVDAO.selectByID(tenDangNhap);
             if(nhanvien != null){
                 String password = nhanvien.getMatKhau();
                 if(MatKhau.equals(password)){

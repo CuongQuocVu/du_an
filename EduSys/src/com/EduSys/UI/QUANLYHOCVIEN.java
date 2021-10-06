@@ -5,7 +5,7 @@ import com.EduSys.dao.NguoiHocDao;
 import com.EduSys.helper.DialogHelper;
 import com.EduSys.helper.JDBC_Helper;
 import com.EduSys.helper.ShareHelper;
-import com.EduSys.helper.utilityHelper;
+import com.EduSys.helper.UtilityHelper;
 import com.EduSys.model.HocVien;
 import com.EduSys.model.NguoiHoc;
 import static java.awt.Color.white;
@@ -389,7 +389,7 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        if (utilityHelper.checkDiem(txtDiem)) {
+        if (UtilityHelper.checkDiem(txtDiem)) {
             insert();
         }
     }//GEN-LAST:event_btnThemActionPerformed

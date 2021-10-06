@@ -11,8 +11,8 @@ import javax.swing.table.DefaultTableModel;
 
 import com.EduSys.dao.NhanVienDao;
 import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
 import com.EduSys.model.NhanVien;
-
 
 /**
  *
@@ -26,6 +26,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     public QuanLyNhanVien() {
         initComponents();
         setLocationRelativeTo(null);
+        this.fillToTable();
     }
 
     /**
@@ -95,6 +96,11 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnThem);
 
         btnSua.setText("Sửa");
@@ -214,6 +220,11 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
             }
         });
         tblQLNV.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblQLNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblQLNVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblQLNV);
 
         javax.swing.GroupLayout pnDanhSachLayout = new javax.swing.GroupLayout(pnDanhSach);
@@ -276,6 +287,15 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLastActionPerformed
+
+    private void tblQLNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNVMouseClicked
+        // TODO add your handling code here:
+        this.mouseClick();
+    }//GEN-LAST:event_tblQLNVMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        this.them();
+    }//GEN-LAST:event_btnThemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,7 +366,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
 
     NhanVienDao nvDAO = new NhanVienDao();
 
-    private NhanVien getForm(){
+    private NhanVien getForm() {
         NhanVien nv = new NhanVien();
         nv.setMaNV(this.txtMaNhanVien.getText());
         nv.setMatKhau(new String(this.txtPassword.getPassword()));
@@ -355,7 +375,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         return nv;
     }
 
-    private void setForm(NhanVien nv){
+    private void setForm(NhanVien nv) {
         txtMaNhanVien.setText(nv.getMaNV());
         txtPassword.setText(nv.getMatKhau());
         txtHoVaTen.setText(nv.getHoTen());
@@ -364,28 +384,29 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         rdoTruongPhong.setSelected(nv.getVaiTro());
     }
 
-    private void fillToTable(){
-        DefaultTableModel model = (DefaultTableModel)tblQLNV.getModel();
+    private void fillToTable() {
+        DefaultTableModel model = (DefaultTableModel) tblQLNV.getModel();
         model.setRowCount(0);
         try {
             List<NhanVien> lstNV = nvDAO.selectAll();
-            for(NhanVien nv : lstNV){
-                Object [] row = {
-                    nv.getMaNV(), 
+            for(NhanVien nv : lstNV) {
+                Object[] row = new Object[] {
+                    nv.getMaNV(),
                     nv.getMatKhau(),
-                    nv.getHoTen(), 
+                    nv.getHoTen(),
                     nv.getVaiTro() ? "Trưởng phòng" : "Nhân viên"
-                    };
-                    model.addRow(row);
+                };
+                model.addRow(row);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu");
         }
     }
 
-    private void them() {        
+    private void them() {
         NhanVien nv = getForm();
-        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());              
+        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());
         if (nv.getMaNV().equals(xacNhanMK)) {
             try {
                 nvDAO.insert(nv);
@@ -409,21 +430,53 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         txtPassword.setText("");
         rdoNhanVien.setSelected(true);
     }
-    
-    private void update(){
+
+    private void update() {
         NhanVien nv = getForm();
         String xacNhanMK = new String(txtPassword.getPassword());
         try {
-            if(!nv.getMatKhau().equals(xacNhanMK)){
+            if (!nv.getMatKhau().equals(xacNhanMK)) {
                 DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
                 return;
-            } else{
-                
+            } else {
+                nvDAO.update(nv);
+                fillToTable();
+                DialogHelper.alert(this, "Sửa thành công");
             }
-            
+
         } catch (Exception e) {
-            //TODO: handle exception
+            e.printStackTrace();
         }
+    }
+
+    private void delete() {
+        if (!ShareHelper.isManager()) {
+            DialogHelper.alert(this, "Bạn không có quyền xóa nhân viên");
+        } else {                        
+            String maNV = this.txtMaNhanVien.getText();
+            if(maNV.equals(ShareHelper.USER.getMaNV())){
+                DialogHelper.alert(this, "Bạn không được xóa chính bạn");
+            } else if(DialogHelper.confirm(this, "Xác nhận xóa sinh viên này !")){
+                try {
+                    nvDAO.delete(maNV);
+                    this.fillToTable();
+                    this.clear();
+                    DialogHelper.alert(this, "Xóa thành công");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    DialogHelper.alert(this, "Xóa thất bại !");
+                }
+            }
+        }
+
+    }
+    
+    private void mouseClick(){       
+        int row = tblQLNV.getSelectedRow();
+        String maNV = (String) tblQLNV.getValueAt(row, 0);
+        NhanVien nv = nvDAO.selectByID(maNV);
+        this.setForm(nv);
+        this.tabQLNV.setSelectedIndex(0);
     }
 
 }

@@ -7,7 +7,7 @@ import com.EduSys.dao.NguoiHocDao;
 import com.EduSys.helper.DialogHelper;
 import com.EduSys.helper.JDBC_Helper;
 import com.EduSys.helper.ShareHelper;
-import com.EduSys.helper.utilityHelper;
+import com.EduSys.helper.UtilityHelper;
 import com.EduSys.model.HocVien;
 import com.EduSys.model.NguoiHoc;
 import static java.awt.Color.white;
