@@ -25,8 +25,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
      */
     public QuanLyNhanVien() {
         initComponents();
-        setLocationRelativeTo(null);
-        this.fillToTable();
+        init();
     }
 
     /**
@@ -104,23 +103,53 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         jPanel2.add(btnThem);
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSua);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnXoa);
 
         btnMoi.setText("Mới");
+        btnMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMoiActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnMoi);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnFirst.setText("|<");
+        btnFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFirstActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnFirst);
 
         btnPrivios.setText("<<");
+        btnPrivios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPriviosActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnPrivios);
 
         btnNext.setText(">>");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnNext);
 
         btnLast.setText(">|");
@@ -285,17 +314,42 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
-        // TODO add your handling code here:
+        this.last();
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void tblQLNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNVMouseClicked
         // TODO add your handling code here:
-        this.mouseClick();
+        row = tblQLNV.getSelectedRow();
+        this.showToForm();
     }//GEN-LAST:event_tblQLNVMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         this.them();
     }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        this.update();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
+        this.clear();
+    }//GEN-LAST:event_btnMoiActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        this.delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        this.first();
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnPriviosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPriviosActionPerformed
+        this.prious();
+    }//GEN-LAST:event_btnPriviosActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        this.next();
+    }//GEN-LAST:event_btnNextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,12 +419,13 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     NhanVienDao nvDAO = new NhanVienDao();
+    int row = -1;
 
     private NhanVien getForm() {
         NhanVien nv = new NhanVien();
-        nv.setMaNV(this.txtMaNhanVien.getText());
-        nv.setMatKhau(new String(this.txtPassword.getPassword()));
-        nv.setHoTen(this.txtHoVaTen.getText());
+        nv.setMaNV(txtMaNhanVien.getText());
+        nv.setMatKhau(new String(txtPassword.getPassword()));
+        nv.setHoTen(txtHoVaTen.getText());
         nv.setVaiTro(rdoTruongPhong.isSelected());;
         return nv;
     }
@@ -389,14 +444,14 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         model.setRowCount(0);
         try {
             List<NhanVien> lstNV = nvDAO.selectAll();
-            for(NhanVien nv : lstNV) {
-                Object[] row = new Object[] {
+            for (NhanVien nv : lstNV) {
+                Object[] rowData = new Object[]{
                     nv.getMaNV(),
                     nv.getMatKhau(),
                     nv.getHoTen(),
                     nv.getVaiTro() ? "Trưởng phòng" : "Nhân viên"
                 };
-                model.addRow(row);
+                model.addRow(rowData);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -406,8 +461,10 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
 
     private void them() {
         NhanVien nv = getForm();
-        String xacNhanMK = new String(this.txtConfirmPassword.getPassword());
-        if (nv.getMaNV().equals(xacNhanMK)) {
+        String xacNhanMK = new String(txtConfirmPassword.getPassword());
+        if (!nv.getMatKhau().equals(xacNhanMK)) {
+            DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
+        } else {
             try {
                 nvDAO.insert(nv);
                 DialogHelper.alert(this, "Thêm mới thành công");
@@ -417,18 +474,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
                 e.printStackTrace();
                 DialogHelper.alert(this, "Thêm mới thất bại");
             }
-        } else {
-            DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
         }
-
-    }
-
-    private void clear() {
-        txtConfirmPassword.setText("");
-        txtHoVaTen.setText("");
-        txtMaNhanVien.setText("");
-        txtPassword.setText("");
-        rdoNhanVien.setSelected(true);
     }
 
     private void update() {
@@ -437,26 +483,25 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         try {
             if (!nv.getMatKhau().equals(xacNhanMK)) {
                 DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
-                return;
             } else {
                 nvDAO.update(nv);
                 fillToTable();
                 DialogHelper.alert(this, "Sửa thành công");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
+            DialogHelper.alert(this, "Sửa thất bại");
         }
     }
 
     private void delete() {
         if (!ShareHelper.isManager()) {
             DialogHelper.alert(this, "Bạn không có quyền xóa nhân viên");
-        } else {                        
+        } else {
             String maNV = this.txtMaNhanVien.getText();
-            if(maNV.equals(ShareHelper.USER.getMaNV())){
+            if (maNV.equals(ShareHelper.USER.getMaNV())) {
                 DialogHelper.alert(this, "Bạn không được xóa chính bạn");
-            } else if(DialogHelper.confirm(this, "Xác nhận xóa sinh viên này !")){
+            } else if (DialogHelper.confirm(this, "Xác nhận xóa nhân viên này !")) {
                 try {
                     nvDAO.delete(maNV);
                     this.fillToTable();
@@ -468,15 +513,54 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
                 }
             }
         }
-
     }
-    
-    private void mouseClick(){       
-        int row = tblQLNV.getSelectedRow();
+
+    private void showToForm() {
         String maNV = (String) tblQLNV.getValueAt(row, 0);
         NhanVien nv = nvDAO.selectByID(maNV);
         this.setForm(nv);
         this.tabQLNV.setSelectedIndex(0);
     }
 
+    void init() {
+        setLocationRelativeTo(null);
+        this.fillToTable();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
+
+    private void clear() {
+        txtConfirmPassword.setText("");
+        txtHoVaTen.setText("");
+        txtMaNhanVien.setText("");
+        txtPassword.setText("");
+        rdoNhanVien.setSelected(true);
+    }
+
+    private void first() {
+        row = 0;
+        showToForm();
+    }
+
+    private void last() {
+        row = tblQLNV.getRowCount() - 1;
+        showToForm();
+    }
+
+    private void prious() {
+        row--;
+        if (row == -1) {
+            row = tblQLNV.getRowCount() - 1;
+            showToForm();
+        }
+        showToForm();
+    }
+
+    private void next() {
+        row++;
+        if (row == tblQLNV.getRowCount()) {
+            row = 0;
+            showToForm();
+        }
+        showToForm();
+    }
 }

@@ -34,19 +34,23 @@ public class NhanVienDao {
         JDBC_Helper.executeUpdate(sql, MaNV);
     }
 
-    private List<NhanVien> selectBySQL(String sql, Object args) {
-        List<NhanVien> listNV = new ArrayList<>();
+    private List<NhanVien> selectBySQL(String sql, Object... args) {
+        List<NhanVien> list = new ArrayList<>();
         try {
-            ResultSet rs = JDBC_Helper.executeQuery(sql, args);
-            while (rs.next()) {
-                NhanVien model = readFromResultSet(rs);
-                listNV.add(model);
+            ResultSet rs = null;
+            try {
+                rs = JDBC_Helper.executeQuery(sql, args);
+                while (rs.next()) {
+                    NhanVien model = readFromResultSet(rs);
+                    list.add(model);
+                }
+            } finally {
+                rs.getStatement().getConnection().close();
             }
-            rs.getStatement().getConnection().close();
-            return listNV;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
+        return list;
     }
 
     private NhanVien readFromResultSet(ResultSet rs) throws SQLException {
@@ -69,7 +73,7 @@ public class NhanVienDao {
 
     public List<NhanVien> selectAll() {
         String sql = "SELECT * FROM NhanVien";
-        return selectBySQL(sql, this);
+        return selectBySQL(sql);
     }
 
 }
