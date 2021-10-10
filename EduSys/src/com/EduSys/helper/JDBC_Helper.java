@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.EduSys.helper;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,71 +16,72 @@ import java.sql.SQLException;
  * @author admin
  */
 public class JDBC_Helper {
+
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static String url = "jdbc:sqlserver://localhost:1433;databaseName=EduSys";
     private static String username = "sa";
     private static String password = "123";
-    
+
     //nạp driver
-    static{
+    static {
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }    
+    }
+
     // xây dựng prepared statement
-    public static PreparedStatement preparedStatement(String sql, Object...args) throws SQLException{
+
+    public static PreparedStatement prepareStatement(String sql, Object... args) throws SQLException {
         Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement pstm = null;
-        if(sql.trim().startsWith("{")){
-            pstm = connection.prepareCall(sql);            
+        if (sql.trim().startsWith("{")) {
+            pstm = connection.prepareCall(sql);
         } else {
             pstm = connection.prepareStatement(sql);
-        } 
-        for(int i = 0; i < args.length; i++){
-            pstm.setObject(i+1, args[i]);
+        }
+        for (int i = 0; i < args.length; i++) {
+            pstm.setObject(i + 1, args[i]);
         }
         return pstm;
     }
+
     // cau lenh exxcuteUpdate
-    public static int executeUpdate(String sql, Object...args){
+    public static int executeUpdate(String sql, Object... args) {
         try {
-            PreparedStatement pstm = JDBC_Helper.preparedStatement(sql, args);
-            try{
+            PreparedStatement pstm = JDBC_Helper.prepareStatement(sql, args);
+            try {
                 return pstm.executeUpdate();
-            } 
-            finally{
+            } finally {
                 pstm.getConnection().close();
             }
         } catch (SQLException e) {
             throw new RuntimeException();
         }
     }
-    // cau lenh select 
-    public static ResultSet executeQuery(String sql, Object...args){
+//     cau lenh select 
+    public static ResultSet executeQuery(String sql, Object... args) {
         try {
-            PreparedStatement pstm = JDBC_Helper.preparedStatement(sql, args);
+            PreparedStatement pstm = prepareStatement(sql, args);
             return pstm.executeQuery();
         } catch (SQLException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
-    
-    // câu lệnh value
-    public static Object value(String sql, Object...args){
+
+// câu lệnh value
+    public static Object value(String sql, Object... args) {
         try {
             ResultSet rs = JDBC_Helper.executeQuery(sql, args);
-            if(rs.next()){
+            if (rs.next()) {
                 return rs.getObject(0);
             }
             rs.getStatement().getConnection().close();
             return null;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
 }
-
-

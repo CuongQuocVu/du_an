@@ -59,6 +59,10 @@ public class NhanVien {
     // public String toString() {
     //     return this.hoTen;
     // }
+
+    public Boolean isManager() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

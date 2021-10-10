@@ -34,23 +34,23 @@ public class NhanVienDao {
         JDBC_Helper.executeUpdate(sql, MaNV);
     }
 
-    private List<NhanVien> select(String sql, Object args) {
-        List<NhanVien> listNV = new ArrayList<>();
+    private List<NhanVien> selectBySQL(String sql, Object... args) {
+        List<NhanVien> list = new ArrayList<>();
         try {
             ResultSet rs = null;
             try {
                 rs = JDBC_Helper.executeQuery(sql, args);
                 while (rs.next()) {
                     NhanVien model = readFromResultSet(rs);
-                    listNV.add(model);
+                    list.add(model);
                 }
             } finally {
                 rs.getStatement().getConnection().close();
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
-        return listNV;
+        return list;
     }
 
     private NhanVien readFromResultSet(ResultSet rs) throws SQLException {
@@ -62,10 +62,10 @@ public class NhanVienDao {
         return model;
     }
 
-    public NhanVien findByID(String MaNV) {
+    public NhanVien selectByID(String MaNV) {
         String sql = "SELECT * FROM NhanVien WHERE MaNV=?";
-        List<NhanVien> listNV = select(sql, MaNV);
-        if(listNV.isEmpty()){
+        List<NhanVien> listNV = selectBySQL(sql, MaNV);
+        if (listNV.isEmpty()) {
             return null;
         }
         return listNV.get(0);
@@ -73,7 +73,7 @@ public class NhanVienDao {
 
     public List<NhanVien> selectAll() {
         String sql = "SELECT * FROM NhanVien";
-        return this.select(sql,this);
+        return selectBySQL(sql);
     }
 
 }
