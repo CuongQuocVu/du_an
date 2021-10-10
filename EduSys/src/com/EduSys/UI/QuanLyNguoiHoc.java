@@ -17,6 +17,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     public QuanLyNguoiHoc() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
