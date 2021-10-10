@@ -17,6 +17,7 @@ public class QuanLyChuyenDe extends javax.swing.JFrame {
     public QuanLyChuyenDe() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

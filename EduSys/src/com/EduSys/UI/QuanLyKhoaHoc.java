@@ -17,6 +17,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     public QuanLyKhoaHoc() {
         initComponents();
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**
