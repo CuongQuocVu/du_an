@@ -5,11 +5,23 @@
  */
 package com.EduSys.UI;
 
+import com.EduSys.dao.NguoiHocDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
+import com.EduSys.helper.XDate;
+import com.EduSys.model.NguoiHoc;
+import java.awt.HeadlessException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author admin
  */
 public class QuanLyNguoiHoc extends javax.swing.JFrame {
+
+    int index = 0;
+    NguoiHocDao dao = new NguoiHocDao();
 
     /**
      * Creates new form QuanLyNhanVien
@@ -393,4 +405,123 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     private javax.swing.JTextField txtNgaySinh;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    void load() {
+        DefaultTableModel model = (DefaultTableModel) tblQLNV.getModel();
+        model.setRowCount(0);
+        try {
+            String keyword = txtTimKiem.getText();
+            List<NguoiHoc> list = dao.selectByKeyword(keyword);
+            for (NguoiHoc nh : list) {
+                Object[] row = {
+                    nh.getMaNH(),
+                    nh.getHoTen(),
+                    nh.getGioiTinh() ? "Nam" : "Nữ",
+                    XDate.toString(nh.getNgaySinh()),
+                    nh.getDienThoai(),
+                    nh.getEmail(),
+                    nh.getMaNV(),
+                    XDate.toString(nh.getNgayDK())
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void insert() {
+        NguoiHoc model = getModel();
+        try {
+            dao.insert(model);
+            this.load();
+            this.clear();
+            DialogHelper.alert(this, "Thêm mới thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void update() {
+        NguoiHoc model = getModel();
+        try {
+            dao.update(model);
+            this.load();
+            DialogHelper.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete() {
+        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa người học này?")) {
+            String manh = txtMaNguoiHoc.getText();
+            try {
+                dao.delete(manh);
+                this.load();
+                this.clear();
+                DialogHelper.alert(this, "Xóa thành công!");
+            } catch (HeadlessException e) {
+                DialogHelper.alert(this, "Xóa thất bại!");
+            }
+        }
+    }
+
+    void edit() {
+        try {
+            String manh = (String) tblQLNV.getValueAt(this.index, 0);
+            NguoiHoc model = dao.findById(manh);
+            if (model != null) {
+                this.setModel(model);
+                this.setStatus(false);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void clear() {
+        NguoiHoc model = new NguoiHoc();
+        model.setMaNV(ShareHelper.USER.getMaNV());
+        model.setNgayDK(XDate.now());
+        this.setModel(model);
+    }
+
+    void setModel(NguoiHoc model) {
+        txtMaNguoiHoc.setText(model.getMaNH());
+        txtHoVaTen.setText(model.getHoTen());
+        cbbGioiTinh.setSelectedIndex(model.getGioiTinh() ? 0 : 1);
+        txtNgaySinh.setText(XDate.toString(model.getNgaySinh()));
+        txtDienThoai.setText(model.getDienThoai());
+        txtEmail.setText(model.getEmail());
+        txtGhiChu.setText(model.getGhiChu());
+    }
+
+    NguoiHoc getModel() {
+        NguoiHoc model = new NguoiHoc();
+        model.setMaNH(txtMaNguoiHoc.getText());
+        model.setHoTen(txtHoVaTen.getText());
+        model.setGioiTinh(cbbGioiTinh.getSelectedIndex() == 0);
+        model.setNgaySinh(XDate.toDate(txtNgaySinh.getText()));
+        model.setDienThoai(txtDienThoai.getText());
+        model.setEmail(txtEmail.getText());
+        model.setGhiChu(txtGhiChu.getText());
+        model.setMaNV(ShareHelper.USER.getMaNV());
+        model.setNgayDK(XDate.now());
+        return model;
+    }
+
+    void setStatus(boolean insertable) {
+        txtMaNguoiHoc.setEditable(insertable);
+        btnThem.setEnabled(insertable);
+        btnSua.setEnabled(!insertable);
+        btnXoa.setEnabled(!insertable);
+        boolean first = this.index > 0;
+        boolean last = this.index < tblQLNV.getRowCount() - 1;
+        btnFirst.setEnabled(!insertable && first);
+        btnPrivios.setEnabled(!insertable && first);
+        btnLast.setEnabled(!insertable && last);
+        btnNext.setEnabled(!insertable && last);
+    }
+
 }
