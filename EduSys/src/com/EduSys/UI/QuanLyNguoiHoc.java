@@ -327,6 +327,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
 
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
+        //test
     }//GEN-LAST:event_btnLastActionPerformed
 
     /**
