@@ -6,6 +6,7 @@
 package com.EduSys.View;
 
 import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -92,6 +93,11 @@ public class MainMenu extends javax.swing.JFrame {
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton1);
 
         jButton2.setText("Kết thúc");
@@ -195,6 +201,11 @@ public class MainMenu extends javax.swing.JFrame {
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setText("Đăng xuất");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuItem3.setText("Đổi mật khẩu");
@@ -274,6 +285,11 @@ public class MainMenu extends javax.swing.JFrame {
         jMenu4.add(jSeparator5);
 
         jMenuItem14.setText("Giới thiệu sản phẩm");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem14);
 
         jMenuBar1.add(jMenu4);
@@ -346,9 +362,21 @@ public class MainMenu extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         if(DialogHelper.confirm(this, "Bạn có muốn thoát? ")){
             System.exit(0);
-        }
-        
+        }        
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dangXuat();        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        this.dangXuat();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        JFrame gioiThieu = new GioiThieu();
+        gioiThieu.setVisible(true);
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -531,5 +559,16 @@ public class MainMenu extends javax.swing.JFrame {
         String path = "src/com/EduSys/icon/";
         icon = new ImageIcon(new ImageIcon(path + name).getImage().getScaledInstance(x, y, 0));
         return icon;
+    }
+    
+    void dangXuat(){
+        try {
+            ShareHelper.USER = null;
+            JFrame dangNhap = new DangNhap();
+            dangNhap.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

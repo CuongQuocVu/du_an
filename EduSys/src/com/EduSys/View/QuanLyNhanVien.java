@@ -358,7 +358,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         this.clear();
-
+        
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -583,6 +583,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         txtMaNhanVien.setText("");
         txtPassword.setText("");
         rdoNhanVien.setSelected(true);
+        txtMaNhanVien.setEditable(true);
     }
 
     private void first() {
