@@ -10,6 +10,7 @@ package com.EduSys.dao;
  * @author admin
  */
 import com.EduSys.helper.JDBC_Helper;
+import com.EduSys.helper.XDate;
 import com.EduSys.model.NguoiHoc;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,8 +20,8 @@ import java.util.List;
 public class NguoiHocDao {
     public void insert(NguoiHoc model) {
 
-        String sql = "INSERT INTO NguoiHoc (MaNH, HoTen, NgaySinh, GioiTinh, DienThoai, Email, GhiChu, MaNV) "
-                + "VALUES( ?,  ?,  ?,  ?,  ?,  ?,  ?,?)";
+        String sql = "INSERT INTO NguoiHoc (MaNH, HoTen, NgaySinh, GioiTinh, DienThoai, Email, GhiChu, MaNV,NgayDK) "
+                + "VALUES( ?,  ?,  ?,  ?,  ?,  ?, ?,?,?)";
         JDBC_Helper.executeUpdate(sql,
                 model.getMaNH(),
                 model.getHoTen(),
@@ -29,7 +30,8 @@ public class NguoiHocDao {
                 model.getDienThoai(),
                 model.getEmail(),
                 model.getGhiChu(),
-                model.getMaNV());
+                model.getMaNV(),
+                XDate.now());
     }
 
     public void update(NguoiHoc model) {
@@ -46,9 +48,11 @@ public class NguoiHocDao {
                 model.getMaNH());
     }
 
-    public void delete(String id) {
-        String sql = "DELETE FROM NguoiHoc WHERE MaNH=?";
-        JDBC_Helper.executeUpdate(sql, id);
+    public void delete(String maNH) {
+        String sql1 = "DELETE HocVien WHERE MaNH=?";
+        String sql = "DELETE NguoiHoc WHERE MaNH=?";
+        JDBC_Helper.executeUpdate(sql1, maNH);
+        JDBC_Helper.executeUpdate(sql, maNH);
     }
 
     public List<NguoiHoc> select() {

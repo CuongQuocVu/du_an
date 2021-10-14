@@ -7,6 +7,7 @@ package com.EduSys.UI;
 
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import com.EduSys.dao.NhanVienDao;
@@ -66,6 +67,8 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         pnDanhSach = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblQLNV = new javax.swing.JTable();
+        txtTimKiem = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("QUẢN LÝ NHÂN VIÊN");
@@ -237,11 +240,11 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
 
             },
             new String [] {
-                "MÃ NV", "MẬT KHẨU", "HỌ VÀ TÊN", "VAI TRÒ"
+                "MÃ NV", "HỌ VÀ TÊN", "VAI TRÒ"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -256,22 +259,41 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblQLNV);
 
+        jButton1.setText("Tìm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnDanhSachLayout = new javax.swing.GroupLayout(pnDanhSach);
         pnDanhSach.setLayout(pnDanhSachLayout);
         pnDanhSachLayout.setHorizontalGroup(
             pnDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnDanhSachLayout.createSequentialGroup()
+            .addGroup(pnDanhSachLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                .addGroup(pnDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                    .addGroup(pnDanhSachLayout.createSequentialGroup()
+                        .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 447, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnDanhSachLayout.setVerticalGroup(
             pnDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnDanhSachLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnDanhSachLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addGroup(pnDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtTimKiem)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        pnDanhSachLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, txtTimKiem});
 
         tabQLNV.addTab("DANH SÁCH", pnDanhSach);
 
@@ -321,22 +343,27 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         // TODO add your handling code here:
         row = tblQLNV.getSelectedRow();
         this.showToForm();
+        txtMaNhanVien.setEditable(false);
     }//GEN-LAST:event_tblQLNVMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         this.them();
+        fillToTable();
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
         this.update();
+        fillToTable();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         this.clear();
+
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         this.delete();
+        fillToTable();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
@@ -350,6 +377,10 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         this.next();
     }//GEN-LAST:event_btnNextActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.timKiem();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -396,6 +427,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
@@ -416,6 +448,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private javax.swing.JTextField txtHoVaTen;
     private javax.swing.JTextField txtMaNhanVien;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
 
     NhanVienDao nvDAO = new NhanVienDao();
@@ -447,7 +480,6 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
             for (NhanVien nv : lstNV) {
                 Object[] rowData = new Object[]{
                     nv.getMaNV(),
-                    nv.getMatKhau(),
                     nv.getHoTen(),
                     nv.getVaiTro() ? "Trưởng phòng" : "Nhân viên"
                 };
@@ -460,38 +492,44 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
 
     private void them() {
-        NhanVien nv = getForm();
-        String xacNhanMK = new String(txtConfirmPassword.getPassword());
-        if (!nv.getMatKhau().equals(xacNhanMK)) {
-            DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
-        } else {
-            try {
-                nvDAO.insert(nv);
-                DialogHelper.alert(this, "Thêm mới thành công");
-                this.fillToTable();
-                this.clear();
-            } catch (Exception e) {
-                e.printStackTrace();
-                DialogHelper.alert(this, "Thêm mới thất bại");
-            }
-        }
-    }
-
-    private void update() {
-        NhanVien nv = getForm();
-        String xacNhanMK = new String(txtPassword.getPassword());
-        try {
+        if (check() && checkTrungMaNv()) {
+            NhanVien nv = getForm();
+            String xacNhanMK = new String(txtConfirmPassword.getPassword());
             if (!nv.getMatKhau().equals(xacNhanMK)) {
                 DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
             } else {
-                nvDAO.update(nv);
-                fillToTable();
-                DialogHelper.alert(this, "Sửa thành công");
+                try {
+                    nvDAO.insert(nv);
+                    DialogHelper.alert(this, "Thêm mới thành công");
+                    this.fillToTable();
+                    this.clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    DialogHelper.alert(this, "Thêm mới thất bại");
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            DialogHelper.alert(this, "Sửa thất bại");
         }
+
+    }
+
+    private void update() {
+        if (check()) {
+            NhanVien nv = getForm();
+            String xacNhanMK = new String(txtPassword.getPassword());
+            try {
+                if (!nv.getMatKhau().equals(xacNhanMK)) {
+                    DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
+                } else {
+                    nvDAO.update(nv);
+                    fillToTable();
+                    DialogHelper.alert(this, "Sửa thành công");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                DialogHelper.alert(this, "Sửa thất bại");
+            }
+        }
+
     }
 
     private void delete() {
@@ -499,6 +537,10 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
             DialogHelper.alert(this, "Bạn không có quyền xóa nhân viên");
         } else {
             String maNV = this.txtMaNhanVien.getText();
+            if (maNV.isEmpty()) {
+                DialogHelper.alert(this, "Không được để trống mã nhân viên");
+                return;
+            }
             if (maNV.equals(ShareHelper.USER.getMaNV())) {
                 DialogHelper.alert(this, "Bạn không được xóa chính bạn");
             } else if (DialogHelper.confirm(this, "Xác nhận xóa nhân viên này !")) {
@@ -513,6 +555,13 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
                 }
             }
         }
+    }
+
+    private void timKiem() {
+        String maNV = txtTimKiem.getText().trim();
+        NhanVien nv = nvDAO.selectByID(maNV);
+        this.setForm(nv);
+        this.tabQLNV.setSelectedIndex(0);
     }
 
     private void showToForm() {
@@ -563,4 +612,51 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         }
         showToForm();
     }
+
+    private boolean check() {
+        if (txtMaNhanVien.getText().trim().length() <= 0) {
+            DialogHelper.alert(this, "Mã nhân viên ko được để trống");
+            txtMaNhanVien.requestFocus();
+            return false;
+        }
+
+        String mk = new String(txtConfirmPassword.getPassword());
+        if (mk.trim().length() <= 0) {
+            DialogHelper.alert(this, "Không được để trống mật khẩu");
+            txtPassword.requestFocus();
+            return false;
+        }
+        String xacnhanMK = new String(txtConfirmPassword.getPassword());
+        if (xacnhanMK.trim().length() <= 0) {
+            DialogHelper.alert(this, "Không được để trống xác nhận mật khẩu");
+            txtConfirmPassword.requestFocus();
+            return false;
+        }
+        if (txtHoVaTen.getText().trim().length() <= 0) {
+            DialogHelper.alert(this, "Không được để trống họ và tên");
+            txtHoVaTen.requestFocus();
+            return false;
+        }
+
+        boolean hoten = txtHoVaTen.getText().matches("^[a-zA-Z\\s]+");
+        if (hoten == false) {
+            DialogHelper.alert(this, "Ho ten sai định dạng");
+            txtHoVaTen.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    boolean checkTrungMaNv() {
+        List<NhanVien> lstNv = nvDAO.selectAll();
+        for (int i = 0; i < lstNv.size(); i++) {
+            if (txtMaNhanVien.getText().trim().equals(lstNv.get(i).getMaNV())) {
+                DialogHelper.alert(this, "Đã có mã nhân viên này");
+                txtMaNhanVien.requestFocus();
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

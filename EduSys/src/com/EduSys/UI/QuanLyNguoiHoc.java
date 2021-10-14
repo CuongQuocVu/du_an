@@ -12,6 +12,7 @@ import com.EduSys.helper.XDate;
 import com.EduSys.model.NguoiHoc;
 import java.awt.HeadlessException;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,8 +26,15 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
      */
     int index = 0;
     NguoiHocDao dao = new NguoiHocDao();
+    
     public QuanLyNguoiHoc() {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        jTabbedPane1.setSelectedIndex(1);
+        
+        load();
+        
     }
 
     /**
@@ -102,29 +110,69 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         jPanel3.setLayout(new java.awt.GridLayout(1, 4, 5, 0));
 
         jButton1.setText("Thêm");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jPanel3.add(jButton1);
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSua);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnXoa);
 
         btnMoi.setText("Mới");
+        btnMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMoiActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnMoi);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 4, 5, 0));
 
         btnFirst.setText("|<");
+        btnFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFirstActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnFirst);
 
         btnPrevious.setText("<<");
+        btnPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreviousActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnPrevious);
 
         btnNext.setText(">>");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnNext);
 
         btnLast.setText(">|");
+        btnLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastActionPerformed(evt);
+            }
+        });
         jPanel4.add(btnLast);
 
         jLabel7.setText("Ngày sinh");
@@ -206,6 +254,11 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
 
         btnTim.setText("Tìm");
+        btnTim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -237,8 +290,31 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             new String [] {
                 "MÃ NH", "HỌ VÀ TÊN", "GIỚI TÍNH", "NGÀY SINH", "ĐIỆN THOẠI", "EMAIL", "MA NV", "NGÀY ĐK"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblQLNH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblQLNHMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblQLNH);
+        if (tblQLNH.getColumnModel().getColumnCount() > 0) {
+            tblQLNH.getColumnModel().getColumn(0).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(1).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(2).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(3).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(4).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(5).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(6).setResizable(false);
+            tblQLNH.getColumnModel().getColumn(7).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -295,6 +371,75 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        this.index = tblQLNH.getRowCount() - 1;
+        this.edit();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        this.index++;
+        this.edit();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
+        this.index--;
+        this.edit();         // TODO add your handling code here:
+    }//GEN-LAST:event_btnPreviousActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        this.index = 0;
+        this.edit();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
+        this.clear();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMoiActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        this.delete();// TODO add your handling code here:
+        this.load();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        this.update();        
+        this.load();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        try {
+            if (check()) {
+                this.insert();
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi, Vui lòng xem lại");
+            e.printStackTrace();
+        }      // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
+        this.tim(); 
+        jTabbedPane1.setSelectedIndex(0);// TODO add your handling code here:
+    }//GEN-LAST:event_btnTimActionPerformed
+
+    private void tblQLNHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNHMouseClicked
+        
+         this.index = tblQLNH.rowAtPoint(evt.getPoint());
+            if (this.index >= 0) {
+                this.edit();
+                jTabbedPane1.setSelectedIndex(0);
+            }
+//        if (evt.getClickCount() == 2) {
+//            this.index = tblQLNH.rowAtPoint(evt.getPoint());
+//            if (this.index >= 0) {
+//                this.edit();
+//                jTabbedPane1.setSelectedIndex(0);
+//            }
+//        }
+
+    }//GEN-LAST:event_tblQLNHMouseClicked
 
     /**
      * @param args the command line arguments
@@ -368,7 +513,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     private javax.swing.JTextField txtNgaySinh;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
-    
+
     void load() {
         DefaultTableModel model = (DefaultTableModel) tblQLNH.getModel();
         model.setRowCount(0);
@@ -392,7 +537,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-
+    
     void insert() {
         NguoiHoc model = getModel();
         try {
@@ -402,9 +547,10 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Thêm mới thành công!");
         } catch (Exception e) {
             DialogHelper.alert(this, "Thêm mới thất bại!");
+            e.printStackTrace();
         }
     }
-
+    
     void update() {
         NguoiHoc model = getModel();
         try {
@@ -415,7 +561,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Cập nhật thất bại!");
         }
     }
-
+    
     void delete() {
         if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa người học này?")) {
             String manh = txtMaNguoiHoc.getText();
@@ -429,7 +575,19 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             }
         }
     }
-
+    
+    void tim(){
+         try {
+            String manh = txtTimKiem.getText().trim();
+            NguoiHoc model = dao.findById(manh);
+            if (model != null) {
+                this.setModel(model);
+                this.setStatus(false);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
     void edit() {
         try {
             String manh = (String) tblQLNH.getValueAt(this.index, 0);
@@ -442,14 +600,14 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-
+    
     void clear() {
         NguoiHoc model = new NguoiHoc();
         model.setMaNV(ShareHelper.USER.getMaNV());
         model.setNgayDK(XDate.now());
         this.setModel(model);
     }
-
+    
     void setModel(NguoiHoc model) {
         txtMaNguoiHoc.setText(model.getMaNH());
         txtHoVaTen.setText(model.getHoTen());
@@ -459,7 +617,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         txtEmail.setText(model.getEmail());
         txtGhiChu.setText(model.getGhiChu());
     }
-
+    
     NguoiHoc getModel() {
         NguoiHoc model = new NguoiHoc();
         model.setMaNH(txtMaNguoiHoc.getText());
@@ -473,9 +631,8 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         model.setNgayDK(XDate.now());
         return model;
     }
-
-    void setStatus(boolean insertable) {
-        txtMaNguoiHoc.setEditable(insertable);
+    
+    void setStatus(boolean insertable) {       
         jButton1.setEnabled(insertable);
         btnSua.setEnabled(!insertable);
         btnXoa.setEnabled(!insertable);
@@ -486,4 +643,31 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         btnLast.setEnabled(!insertable && last);
         btnNext.setEnabled(!insertable && last);
     }
+    
+    public boolean check() {
+        if (txtMaNguoiHoc.getText().isEmpty() || txtNgaySinh.getText().isEmpty() || txtDienThoai.getText().isEmpty()
+                || txtHoVaTen.getText().isEmpty() || txtGhiChu.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin");
+            return false;
+        } else if (!(txtEmail.getText()).matches("^[\\w-_\\.]+\\@[\\w&&[^0-9]]+\\.com$")) {
+            JOptionPane.showMessageDialog(rootPane, "Sai định dạng email", "Error", 1);
+            txtEmail.requestFocus();
+            return false;
+        } 
+        else if (!(txtDienThoai.getText()).matches("[0-9]{1,11}")) {
+            JOptionPane.showMessageDialog(rootPane, "Học phí phải nhập số", "Error", 1);
+            txtDienThoai.requestFocus();
+            return false;
+        }
+        List<NguoiHoc> list = dao.select();
+        for (int i = 0; i < list.size(); i++) {
+            if (txtMaNguoiHoc.getText().equals(list.get(i).getMaNH())) {
+                JOptionPane.showMessageDialog(this, "Trùng mã người học");
+                return false;
+            }
+        }
+        return true;
+        
+    }
+;
 }

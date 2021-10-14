@@ -89,7 +89,8 @@ insert into NguoiHoc values ('NH01', N'Nguyễn Thành Trung', '5/4/2000', 1, '0
 
 insert into HocVien(MaKH, MaNH, Diem) values (1, 'NH01', 9), 
 											(2, 'NH02', 10)
-select * from HocVien
+select * from NguoiHoc
+
 
 
 	------ nhan vien -------------

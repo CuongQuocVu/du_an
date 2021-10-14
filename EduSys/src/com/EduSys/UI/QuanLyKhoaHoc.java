@@ -5,6 +5,8 @@
  */
 package com.EduSys.UI;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author admin
@@ -59,6 +61,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         txtGhiChu = new javax.swing.JTextArea();
         txtThoiLuong = new javax.swing.JTextField();
         txtNgayKG = new javax.swing.JTextField();
+        btnHocVien = new javax.swing.JButton();
         pnDanhSach = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblQLKH = new javax.swing.JTable();
@@ -124,6 +127,13 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         txtGhiChu.setWrapStyleWord(true);
         jScrollPane2.setViewportView(txtGhiChu);
 
+        btnHocVien.setText("Học viên");
+        btnHocVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHocVienActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnCapNhatLayout = new javax.swing.GroupLayout(pnCapNhat);
         pnCapNhat.setLayout(pnCapNhatLayout);
         pnCapNhatLayout.setHorizontalGroup(
@@ -131,7 +141,9 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
             .addGroup(pnCapNhatLayout.createSequentialGroup()
                 .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(147, 147, 147)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnHocVien)
+                .addGap(68, 68, 68)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
             .addGroup(pnCapNhatLayout.createSequentialGroup()
@@ -203,7 +215,8 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(pnCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHocVien, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
@@ -276,7 +289,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, Short.MAX_VALUE)
         );
 
         pack();
@@ -285,6 +298,11 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnHocVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHocVienActionPerformed
+        
+        //JFrame hocvien = new QUANLYHOCVIEN();
+    }//GEN-LAST:event_btnHocVienActionPerformed
 
     /**
      * @param args the command line arguments
@@ -330,6 +348,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFirst;
+    private javax.swing.JButton btnHocVien;
     private javax.swing.JButton btnLast;
     private javax.swing.JButton btnMoi;
     private javax.swing.JButton btnNext;
