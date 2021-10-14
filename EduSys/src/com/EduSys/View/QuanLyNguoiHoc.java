@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.EduSys.UI;
+package com.EduSys.View;
 
 import com.EduSys.dao.NguoiHocDao;
 import com.EduSys.helper.DialogHelper;
@@ -602,10 +602,14 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     }
     
     void clear() {
-        NguoiHoc model = new NguoiHoc();
-        model.setMaNV(ShareHelper.USER.getMaNV());
-        model.setNgayDK(XDate.now());
-        this.setModel(model);
+        txtDienThoai.setText("");
+        txtEmail.setText("");
+        txtGhiChu.setText("");
+        txtHoVaTen.setText("");
+        txtMaNguoiHoc.setText("");
+        txtNgaySinh.setText("");
+        txtTimKiem.setText("");
+        cbbGioiTinh.setSelectedIndex(0);
     }
     
     void setModel(NguoiHoc model) {

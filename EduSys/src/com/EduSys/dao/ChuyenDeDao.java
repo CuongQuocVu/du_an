@@ -30,7 +30,9 @@ public class ChuyenDeDao {
     }
 
     public void delete(String MaCD){
+        String sql1 = "DELETE FROM KhoaHoc WHERE MaCD=?";
         String sql = "DELETE FROM ChuyenDe WHERE MaCD=?";
+        JDBC_Helper.executeUpdate(sql1, MaCD);
         JDBC_Helper.executeUpdate(sql, MaCD);
     }
 

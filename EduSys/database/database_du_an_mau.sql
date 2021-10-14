@@ -24,10 +24,9 @@ create table ChuyenDe
 go
 
 ALTER TABLE ChuyenDe
-ALTER COLUMN Hinh NVARCHAR(50) NULL
+ALTER COLUMN Hinh NVARCHAR(100) NULL
 ALTER TABLE ChuyenDe
 ALTER COLUMN MoTa NVARCHAR(50) NULL
-
 create table KhoaHoc
 (
 	MaKH int identity(1,1) NOT NULL PRIMARY KEY,
@@ -72,6 +71,8 @@ create table HocVien
 go
 
 select * from HocVien
+select * from ChuyenDe
+
 
 INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES ('NV01','123' , N'Nguyễn Văn A', 0)
 select * from NhanVien

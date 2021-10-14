@@ -47,7 +47,7 @@ public class XImage {
 
     //doc hinh anh logo chuyen de
     public static ImageIcon readLogo(String fileName) {
-        File path = new File("img", fileName);
+        File path = new File(fileName);
         return new ImageIcon(path.getAbsolutePath());
     }
 }

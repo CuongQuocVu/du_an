@@ -1,4 +1,4 @@
-package com.EduSys.UI;
+package com.EduSys.View;
 
 import com.EduSys.dao.HocVienDao;
 import com.EduSys.dao.NguoiHocDao;

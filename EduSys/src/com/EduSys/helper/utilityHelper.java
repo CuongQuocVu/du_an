@@ -9,8 +9,6 @@ import static java.awt.Color.pink;
 import static java.awt.Color.white;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**

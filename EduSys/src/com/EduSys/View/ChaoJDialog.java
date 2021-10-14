@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.EduSys.UI;
+package com.EduSys.View;
 
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -143,7 +143,7 @@ public class ChaoJDialog extends javax.swing.JFrame {
     }
     Timer timer;
     private void loadingBar() {
-        int delay = 1000;
+        int delay = 900;
         timer = new Timer(delay, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
