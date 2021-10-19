@@ -20,6 +20,7 @@ public class GioiThieu extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setIcon();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

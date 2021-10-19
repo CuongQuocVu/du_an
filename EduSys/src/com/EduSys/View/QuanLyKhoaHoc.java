@@ -22,11 +22,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author admin
  */
-public class QuanLyKhoaHoc extends javax.swing.JFrame {    
+public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
     int index = 0;
     KhoaHocDao dao = new KhoaHocDao();
     ChuyenDeDao cddao = new ChuyenDeDao();
+
     public QuanLyKhoaHoc() {
         initComponents();
         setLocationRelativeTo(null);
@@ -335,7 +336,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
     private void btnHocVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHocVienActionPerformed
         openHocVien();
-        
+
     }//GEN-LAST:event_btnHocVienActionPerformed
 
     private void tblQLKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLKHMouseClicked
@@ -447,7 +448,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void load() {
-        
+
         DefaultTableModel model = (DefaultTableModel) tblQLKH.getModel();
         model.setRowCount(0);
         try {
@@ -517,7 +518,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         cbbCD.setSelectedIndex(0);
     }
 
-     void edit() {
+    void edit() {
         try {
             Integer makh = (Integer) tblQLKH.getValueAt(this.index, 0);
             KhoaHoc model = dao.findById(makh);
@@ -531,14 +532,21 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     private void setModel(KhoaHoc model) {
+        String MaCD = (String) tblQLKH.getValueAt(this.index, 1);
+        ChuyenDe cd = cddao.findById(MaCD);
+        Object tenCD = cd.getTenCD();
+        cbbCD.setSelectedItem(tenCD);
+        //cbbCD.setSelectedIndex(2);
+
         cbbCD.setToolTipText(String.valueOf(model.getMaKH()));
-        cbbCD.setSelectedItem(cddao.findById(model.getMaCD()));
+        //cbbCD.setSelectedItem(cddao.findById(model.getMaCD()));
         txtNgayKG.setText(XDate.toString(model.getNgayKG()));
         txtHocPhi.setText(String.valueOf(model.getHocPhi()));
         txtThoiLuong.setText(String.valueOf(model.getThoiLuong()));
         txtNguoiTao.setText(model.getMaNV());
         txtngaytao.setText(XDate.toString(model.getNgayTao()));
         txtGhiChu.setText(model.getGhiChu());
+
     }
 
     private void setStatus(boolean insertable) {
@@ -561,7 +569,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     void openHocVien() {
-        Integer id = Integer.valueOf(cbbCD.getToolTipText());        
+        Integer id = Integer.valueOf(cbbCD.getToolTipText());
         new QUANLYHOCVIEN(id).setVisible(true);
     }
 

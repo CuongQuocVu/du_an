@@ -1,18 +1,7 @@
 package com.EduSys.View;
 
-
-import com.EduSys.dao.HocVienDao;
 import com.EduSys.dao.KhoaHocDao;
-import com.EduSys.dao.NguoiHocDao;
-import com.EduSys.helper.DialogHelper;
-import com.EduSys.helper.JDBC_Helper;
 import com.EduSys.helper.ShareHelper;
-import com.EduSys.helper.UtilityHelper;
-import com.EduSys.model.HocVien;
-import com.EduSys.model.NguoiHoc;
-import static java.awt.Color.white;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
@@ -339,15 +328,6 @@ public class ThongKe extends javax.swing.JInternalFrame {
     void fillComboBoxNam() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboNam.getModel();
         model.removeAllElements();
-//        List<khoaHoc> list = khdao.select();
-//        for (khoaHoc kh : list) {
-//            int nam = kh.getNgayKG().getYear() + 1900; //date.getYear() trả về int năm của date - 1900
-//            if (model.getIndexOf(nam) < 0) { //kiểm tra xem trong cbo đã có năm này chưa, nếu chưa có thì mới thêm năm
-//                //model.getIndexOf(Object) trả về vị trí của object trong cbo, nêú chưa có trả về -1
-//                model.addElement(nam);
-//                //model.getElementAt(2);                  //chẳng để làm gì
-//            }
-//        }
         List<Integer> list=dao.getNamKhaiGiang();
         for(Integer nam: list){
             model.addElement(nam);
@@ -439,7 +419,45 @@ public class ThongKe extends javax.swing.JInternalFrame {
         fillTableDoanhThu();                   //ActionPerformed
     }//GEN-LAST:event_cboNamActionPerformed
 
-
+//     public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ThongKe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ThongKe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ThongKe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ThongKe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ThongKe().setVisible(true);
+//            }
+//        });
+//    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboKhoaHoc;
     private javax.swing.JComboBox<String> cboNam;

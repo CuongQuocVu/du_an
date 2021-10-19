@@ -262,17 +262,37 @@ public class MainMenu extends javax.swing.JFrame {
         jMenu3.setText("Thống kê");
 
         jMenuItem9.setText("Người học từng năm");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem9);
         jMenu3.add(jSeparator6);
 
         jMenuItem10.setText("Bảng điểm theo khóa");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem10);
 
         jMenuItem11.setText("Điểm từng khóa học");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem11);
         jMenu3.add(jSeparator7);
 
         jMenuItem12.setText("Doanh thu từng chuyên đề");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem12);
 
         jMenuBar1.add(jMenu3);
@@ -320,7 +340,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         JFrame nv = new QuanLyNhanVien();
         nv.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -360,13 +380,13 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        if(DialogHelper.confirm(this, "Bạn có muốn thoát? ")){
+        if (DialogHelper.confirm(this, "Bạn có muốn thoát? ")) {
             System.exit(0);
-        }        
+        }
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dangXuat();        
+        this.dangXuat();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -377,6 +397,30 @@ public class MainMenu extends javax.swing.JFrame {
         JFrame gioiThieu = new GioiThieu();
         gioiThieu.setVisible(true);
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // người học từng năm      
+        new ThongKe(0).setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        //bảng điểm theo khóa
+        new ThongKe(1).setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        //doanh thu
+        if (!ShareHelper.isManager()) {
+            DialogHelper.alert(this, "Bạn không có quyền xem doanh thu");
+        } else {
+            new ThongKe(3).setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        // điểm từng khóa học
+        new ThongKe(2).setVisible(true);
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -560,8 +604,8 @@ public class MainMenu extends javax.swing.JFrame {
         icon = new ImageIcon(new ImageIcon(path + name).getImage().getScaledInstance(x, y, 0));
         return icon;
     }
-    
-    void dangXuat(){
+
+    void dangXuat() {
         try {
             ShareHelper.USER = null;
             JFrame dangNhap = new DangNhap();
