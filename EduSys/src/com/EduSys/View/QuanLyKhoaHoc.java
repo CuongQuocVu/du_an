@@ -18,11 +18,29 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
+import com.EduSys.dao.ChuyenDeDao;
+import com.EduSys.dao.KhoaHocDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
+import com.EduSys.helper.XDate;
+import com.EduSys.model.ChuyenDe;
+import com.EduSys.model.KhoaHoc;
+import java.awt.HeadlessException;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author admin
  */
 public class QuanLyKhoaHoc extends javax.swing.JFrame {
+
+    int index = 0;
+    KhoaHocDao dao = new KhoaHocDao();
+    ChuyenDeDao cddao = new ChuyenDeDao();
 
     /**
      * Creates new form QuanLyNhanVien
@@ -276,6 +294,11 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
             }
         });
         tblQLKH.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblQLKH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblQLKHMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblQLKH);
 
         javax.swing.GroupLayout pnDanhSachLayout = new javax.swing.GroupLayout(pnDanhSach);
@@ -335,25 +358,22 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnHocVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHocVienActionPerformed
-        openHocVien();
+
         //JFrame hocvien = new QUANLYHOCVIEN();
     }//GEN-LAST:event_btnHocVienActionPerformed
 
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        this.insert();        
-    }//GEN-LAST:event_btnThemActionPerformed
+    private void tblQLKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLKHMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.index = tblQLKH.rowAtPoint(evt.getPoint());
 
-    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        this.update();        
-    }//GEN-LAST:event_btnSuaActionPerformed
+            if (this.index >= 0) {
+                this.edit();
+                tabQLNV.setSelectedIndex(0);
+            }
+        }
 
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        this.delete();       
-    }//GEN-LAST:event_btnXoaActionPerformed
-
-    private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
-        this.clear();
-    }//GEN-LAST:event_btnMoiActionPerformed
+    }//GEN-LAST:event_tblQLKHMouseClicked
 
     /**
      * @param args the command line arguments
@@ -435,7 +455,6 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void load() {
-        fillComboBox();
         DefaultTableModel model = (DefaultTableModel) tblQLKH.getModel();
         model.setRowCount(0);
         try {
@@ -561,7 +580,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         try {
             List<ChuyenDe> list = cddao.selectAll();
             for (ChuyenDe cd : list) {
-                model.addElement(cd.getTenCD());
+                model.addElement(cd);
             }
         } catch (Exception e) {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
