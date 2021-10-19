@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.EduSys.UI;
+package com.EduSys.View;
 
 import javax.swing.ImageIcon;
 
@@ -215,7 +215,7 @@ public class DangNhap extends javax.swing.JFrame {
                 String password = nhanvien.getMatKhau();
                 if(MatKhau.equals(password)){
                     ShareHelper.USER = nhanvien;
-                    DialogHelper.alert(this, "Đăng nhập thành công");
+                    //DialogHelper.alert(this, "Đăng nhập thành công");
                     this.dispose();
                     JFrame main = new MainMenu();
                     main.setVisible(true);

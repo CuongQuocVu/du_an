@@ -23,6 +23,10 @@ create table ChuyenDe
 )
 go
 
+ALTER TABLE ChuyenDe
+ALTER COLUMN Hinh NVARCHAR(100) NULL
+ALTER TABLE ChuyenDe
+ALTER COLUMN MoTa NVARCHAR(50) NULL
 create table KhoaHoc
 (
 	MaKH int identity(1,1) NOT NULL PRIMARY KEY,
@@ -37,6 +41,8 @@ create table KhoaHoc
 	foreign key (MaNV) references NhanVien(MaNV) on delete no action on update cascade
 )
 go
+ALTER TABLE KhoaHoc
+ALTER COLUMN GhiChu NVARCHAR(50) NULL
 
 create table NguoiHoc
 (
@@ -65,10 +71,28 @@ create table HocVien
 go
 
 select * from HocVien
+select * from ChuyenDe
+
 
 INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES ('NV01','123' , N'Nguyễn Văn A', 0)
 select * from NhanVien
 
+insert into ChuyenDe(MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) values ('CD01', N'Chuyên đề 01', 100, 2,null,null)
+insert into ChuyenDe(MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) values	('CD02', N'Chuyên đề 02', 200, 3,null,null)
+
+insert into KhoaHoc( MaCD, HocPhi, ThoiLuong, NgayKG, GhiChu, MaNV, NgayTao) 
+values ( 'CD01', 300, 3, '11/8/2021', null, 'NV01', '11/1/2021'),
+		( 'CD02', 400, 2, '11/10/2021', null, 'NV01', '11/5/2021')
+
+insert into NguoiHoc values ('NH01', N'Nguyễn Thành Trung', '5/4/2000', 1, '0987654321', 'trung123@fpt.edu.vn', null, 'NV01','9/9/2021'), 
+							('NH02', N'Phạm Thị Hà', '3/4/1999', 1, '0987543123', 'HaPT@fpt.edu.vn', null, 'NV01','9/10/2021')
+
+
+insert into HocVien(MaKH, MaNH, Diem) values (1, 'NH01', 9), 
+											(2, 'NH02', 10)
+select * from NguoiHoc
+
+select * from KhoaHoc
 	------ nhan vien -------------
 --Thêm mới
 	INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)

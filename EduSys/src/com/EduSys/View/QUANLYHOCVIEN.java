@@ -1,4 +1,4 @@
-package com.EduSys.UI;
+package com.EduSys.View;
 
 import com.EduSys.dao.HocVienDao;
 import com.EduSys.dao.NguoiHocDao;
@@ -27,6 +27,10 @@ import com.EduSys.model.NguoiHoc;
  * @author Sieu Nhan Bay
  */
 public class QUANLYHOCVIEN extends javax.swing.JFrame {
+
+    public Integer MaKH;
+    HocVienDao dao = new HocVienDao();
+    NguoiHocDao nhdao = new NguoiHocDao();
 
     /**
      * Creates new form hocVienJFrame
@@ -72,7 +76,6 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
 
         pnlHVKhac.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "HỌC VIÊN KHÁC", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
-        cboNguoiHoc.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cboNguoiHoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboNguoiHocActionPerformed(evt);
@@ -247,29 +250,21 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
                 .addComponent(pnlHVKhac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlHVKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public Integer MaKH;   //maKH được chọn nhập từ constructor
-    HocVienDao dao = new HocVienDao();
-    NguoiHocDao nhdao = new NguoiHocDao();
-
     void init() {
-        
+
         setLocationRelativeTo(null);
     }
 
-    //lấy tất cả đối tượng nguoiHoc không thuộc khoaHoc từ CSDL (theo maKH)
-    //rồi thêm vào combobox
     void fillComboBox() {
-        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNguoiHoc.getModel(); //kết nối cbo với model
-        model.removeAllElements(); //xóa toàn bộ item
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboNguoiHoc.getModel();
+        model.removeAllElements();
         try {
-            //lấy tất cả đối tượng nguoiHoc không thuộc khoaHoc từ CSDL
-            //rồi thêm vào combobox
             List<NguoiHoc> list = nhdao.selectByCourse(MaKH);
             for (NguoiHoc nh : list) {
                 model.addElement(nh);
@@ -279,40 +274,34 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
         }
     }
 
+    //lấy tất cả đối tượng nguoiHoc không thuộc khoaHoc từ CSDL (theo maKH)
+    //rồi thêm vào combobox
     //lấy về MaHV, MaKH, MaNH, Diem, HoTen từ các bảng trong CSDL của các học viên thuộc khóa học (theo maKH)
     //điền các bản ghi tương ứng vào bảng theo: tất cả, chưa nhập điểm, đã nhập điểm
     void fillGridView() {
         DefaultTableModel model = (DefaultTableModel) tblGridView.getModel();
         model.setRowCount(0);
-        ResultSet rs = null;
         try {
-            //lấy về MaHV, MaKH, MaNH, Diem, HoTen từ các bảng trong CSDL của các học viên thuộc 
-            //khóa học (theo maKH)
-            String sql = "SELECT hv.*, nh.HoTen FROM hocVien hv "
-                    + " JOIN nguoiHoc nh ON nh.MaNH=hv.MaNH WHERE MaKH=?";
-            rs =JDBC_Helper.executeQuery(sql, MaKH);
+            String sql = "	select Makh,a.manh,hoten,diem \n"
+                    + "	from NguoiHoc a join HocVien b on a.MaNH = b.MaNH \n"
+                    + "	where MaKH = ?";
+            ResultSet rs = JDBC_Helper.executeQuery(sql, MaKH);
             while (rs.next()) {
                 double diem = rs.getDouble("Diem");
                 Object[] row = {
                     rs.getInt("MaHV"), rs.getString("MaNH"),
                     rs.getString("HoTen"), diem, false
                 };
-                if (rdoTatCa.isSelected()) {  //tất cả thì add tất cả bản ghi vào 
+                if (rdoTatCa.isSelected()) {
                     model.addRow(row);
-                } else if (rdoDaNhap.isSelected() && diem >= 0) {//đã nhập thì chỉ add bản ghi điểm 0-10
+                } else if (rdoDaNhap.isSelected() && diem >= 0) {
                     model.addRow(row);
-                } else if (rdoChuaNhap.isSelected() && diem < 0) {//chưa nhập thì chỉ nhập bản ghi điểm -1
+                } else if (rdoChuaNhap.isSelected() && diem < 0) {
                     model.addRow(row);
                 }
             }
         } catch (SQLException e) {
             DialogHelper.alert(this, "Lỗi truy vấn học viên!");
-        } finally {
-            try {
-                rs.getStatement().getConnection().close();
-            } catch (SQLException ex) {
-                throw new RuntimeException();
-            }
         }
     }
 
@@ -323,16 +312,15 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
     mã tự sinh này là cố định không đổi kể cả khi bản ghi phía trước bị xóa làm stt thay đổi
      */
     void insert() {
-        NguoiHoc nguoiHoc = (NguoiHoc) cboNguoiHoc.getSelectedItem(); //lấy đt nguoiHoc từ combobox
-        HocVien model = new HocVien(); //tạo đt hocVien
+        NguoiHoc nguoiHoc = (NguoiHoc) cboNguoiHoc.getSelectedItem();
+        HocVien model = new HocVien();
         model.setMaKH(MaKH);
         model.setMaNH(nguoiHoc.getMaNH());
         model.setDiem(Double.valueOf(txtDiem.getText()));
         try {
-            dao.insert(model);  //thêm đt hocVien vào CSDL bảng hocVien
-            this.fillComboBox(); //load lại combobox
-            this.fillGridView(); //load lại bảng
-            txtDiem.setText("-1");
+            dao.insert(model);
+            this.fillComboBox();
+            this.fillGridView();
         } catch (Exception e) {
             DialogHelper.alert(this, "Lỗi thêm học viên vào khóa học!");
         }
@@ -342,7 +330,7 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
     //cập nhật vào CSDL, load lại bảng, load lại cbo
     void update() {
         txtDiem.setBackground(white);
-        int a = 0,b=0;
+        int a = 0, b = 0;
         for (int i = 0; i < tblGridView.getRowCount(); i++) {
             Integer mahv = (Integer) tblGridView.getValueAt(i, 0);  //lấy maHV từ bảng(ko sửa đc)
             String manh = (String) tblGridView.getValueAt(i, 1);  //lấy maNH từ bảng(ko sửa đc)
@@ -354,7 +342,9 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
             if (isDelete && ShareHelper.USER.isManager()) {     //nếu có tích thì xóa bản ghi đó đi
                 dao.delete(mahv);
             } else {           //còn ko tích thì cập 
-                if(ShareHelper.USER.isManager()==false)tblGridView.setValueAt(false, i, 3);
+                if (ShareHelper.USER.isManager() == false) {
+                    tblGridView.setValueAt(false, i, 3);
+                }
                 if ((diem >= 0 && diem <= 10) || diem == -1) {
                     HocVien model = new HocVien();
                     model.setMaHV(mahv);
@@ -362,7 +352,7 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
                     model.setMaNH(manh);
                     model.setDiem(diem);
                     dao.update(model);
-                }else{
+                } else {
                     b++;
                 }
             }
@@ -373,14 +363,14 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
             DialogHelper.alert(this, "Chỉ trưởng phòng mới được xóa học viên\nbạn chỉ được thêm học viên và điểm");
             return;
         }
-        if(b>0){
+        if (b > 0) {
             DialogHelper.alert(this, "Điểm phải là số thực từ 0-10 hoặc chưa nhập (-1)");
             return;
         }
         DialogHelper.alert(this, "Cập nhật thành công!");
     }
-    
-    
+
+
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         this.fillComboBox();
@@ -389,9 +379,12 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-        if (UtilityHelper.checkDiem(txtDiem)) {
-            insert();
+        try {
+            this.insert();
+        } catch (Exception ex) {
+            DialogHelper.alert(this, "Lỗi");
         }
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void rdoTatCaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdoTatCaMouseClicked
@@ -408,7 +401,11 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
 
     private void btnCapNhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatActionPerformed
         // TODO add your handling code here:
-            update();
+        try {
+            this.update();
+        } catch (Exception ex) {
+            DialogHelper.alert(this, "Lỗi");
+        }
     }//GEN-LAST:event_btnCapNhatActionPerformed
 
     private void rdoTatCaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoTatCaActionPerformed

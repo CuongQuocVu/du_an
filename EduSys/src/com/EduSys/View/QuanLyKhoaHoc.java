@@ -3,7 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.EduSys.UI;
+package com.EduSys.View;
+
+import com.EduSys.dao.ChuyenDeDao;
+import com.EduSys.dao.KhoaHocDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
+import com.EduSys.helper.XDate;
+import com.EduSys.model.ChuyenDe;
+import com.EduSys.model.KhoaHoc;
+import java.awt.HeadlessException;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 import com.EduSys.dao.ChuyenDeDao;
 import com.EduSys.dao.KhoaHocDao;
@@ -32,10 +45,14 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     /**
      * Creates new form QuanLyNhanVien
      */
+    int index = 0;
+    KhoaHocDao dao = new KhoaHocDao();
+    ChuyenDeDao cddao = new ChuyenDeDao();
     public QuanLyKhoaHoc() {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.load();
     }
 
     /**
@@ -103,15 +120,35 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnThem);
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSua);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnXoa);
 
         btnMoi.setText("Mới");
+        btnMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMoiActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnMoi);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -245,7 +282,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
             },
             new String [] {
-                "MÃ KH", "HỌ VÀ TÊN", "THỜI LƯỢNG ", "HỌC PHÍ", "KHAI GIẢNG", "TẠO BỞI", "NGÀY TẠO"
+                "MÃ KH", "CHUYÊN ĐỀ", "THỜI LƯỢNG ", "HỌC PHÍ", "KHAI GIẢNG", "TẠO BỞI", "NGÀY TẠO"
             }
         ) {
             boolean[] canEdit = new boolean [] {

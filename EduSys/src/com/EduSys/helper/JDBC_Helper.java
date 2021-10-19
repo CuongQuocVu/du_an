@@ -48,7 +48,7 @@ public class JDBC_Helper {
     }
 
     // cau lenh exxcuteUpdate
-    public static int executeUpdate(String sql, Object... args) {
+    public static int executeUpdate(String sql, Object...args) {
         try {
             PreparedStatement pstm = JDBC_Helper.prepareStatement(sql, args);
             try {
@@ -57,6 +57,7 @@ public class JDBC_Helper {
                 pstm.getConnection().close();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException();
         }
     }
