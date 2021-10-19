@@ -18,33 +18,12 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.EduSys.dao.ChuyenDeDao;
-import com.EduSys.dao.KhoaHocDao;
-import com.EduSys.helper.DialogHelper;
-import com.EduSys.helper.ShareHelper;
-import com.EduSys.helper.XDate;
-import com.EduSys.model.ChuyenDe;
-import com.EduSys.model.KhoaHoc;
-import java.awt.HeadlessException;
-import java.util.Date;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author admin
  */
-public class QuanLyKhoaHoc extends javax.swing.JFrame {
+public class QuanLyKhoaHoc extends javax.swing.JFrame {    
 
-    int index = 0;
-    KhoaHocDao dao = new KhoaHocDao();
-    ChuyenDeDao cddao = new ChuyenDeDao();
-
-    /**
-     * Creates new form QuanLyNhanVien
-     */
     int index = 0;
     KhoaHocDao dao = new KhoaHocDao();
     ChuyenDeDao cddao = new ChuyenDeDao();
@@ -120,35 +99,15 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnThem.setText("Thêm");
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnThem);
 
         btnSua.setText("Sửa");
-        btnSua.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSuaActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnSua);
 
         btnXoa.setText("Xóa");
-        btnXoa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnXoa);
 
         btnMoi.setText("Mới");
-        btnMoi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMoiActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnMoi);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -192,16 +151,15 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         pnCapNhatLayout.setHorizontalGroup(
             pnCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnCapNhatLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnHocVien)
-                .addGap(68, 68, 68)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
-            .addGroup(pnCapNhatLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(pnCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnCapNhatLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnHocVien)
+                        .addGap(68, 68, 68)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20))
                     .addGroup(pnCapNhatLayout.createSequentialGroup()
                         .addGroup(pnCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblHocPhi, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -228,9 +186,6 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
                         .addComponent(jScrollPane2)
                         .addContainerGap())))
         );
-
-        pnCapNhatLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jPanel2, jPanel4});
-
         pnCapNhatLayout.setVerticalGroup(
             pnCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnCapNhatLayout.createSequentialGroup()
@@ -307,7 +262,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
             pnDanhSachLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnDanhSachLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 771, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pnDanhSachLayout.setVerticalGroup(
