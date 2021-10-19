@@ -92,8 +92,7 @@ insert into HocVien(MaKH, MaNH, Diem) values (1, 'NH01', 9),
 											(2, 'NH02', 10)
 select * from NguoiHoc
 
-
-
+select * from KhoaHoc
 	------ nhan vien -------------
 --Thêm mới
 	INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)

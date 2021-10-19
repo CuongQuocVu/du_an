@@ -5,7 +5,18 @@
  */
 package com.EduSys.View;
 
-import javax.swing.JFrame;
+import com.EduSys.dao.ChuyenDeDao;
+import com.EduSys.dao.KhoaHocDao;
+import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
+import com.EduSys.helper.XDate;
+import com.EduSys.model.ChuyenDe;
+import com.EduSys.model.KhoaHoc;
+import java.awt.HeadlessException;
+import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,10 +27,14 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     /**
      * Creates new form QuanLyNhanVien
      */
+    int index = 0;
+    KhoaHocDao dao = new KhoaHocDao();
+    ChuyenDeDao cddao = new ChuyenDeDao();
     public QuanLyKhoaHoc() {
         initComponents();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.load();
     }
 
     /**
@@ -87,15 +102,35 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnThem);
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSua);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnXoa);
 
         btnMoi.setText("Mới");
+        btnMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMoiActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnMoi);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -229,7 +264,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
             },
             new String [] {
-                "MÃ KH", "HỌ VÀ TÊN", "THỜI LƯỢNG ", "HỌC PHÍ", "KHAI GIẢNG", "TẠO BỞI", "NGÀY TẠO"
+                "MÃ KH", "CHUYÊN ĐỀ", "THỜI LƯỢNG ", "HỌC PHÍ", "KHAI GIẢNG", "TẠO BỞI", "NGÀY TẠO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -289,7 +324,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, Short.MAX_VALUE)
         );
 
         pack();
@@ -300,9 +335,25 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnHocVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHocVienActionPerformed
-        
+        openHocVien();
         //JFrame hocvien = new QUANLYHOCVIEN();
     }//GEN-LAST:event_btnHocVienActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        this.insert();        
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        this.update();        
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        this.delete();       
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
+        this.clear();
+    }//GEN-LAST:event_btnMoiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,4 +433,154 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     private javax.swing.JTextField txtThoiLuong;
     private javax.swing.JTextField txtngaytao;
     // End of variables declaration//GEN-END:variables
+
+    void load() {
+        fillComboBox();
+        DefaultTableModel model = (DefaultTableModel) tblQLKH.getModel();
+        model.setRowCount(0);
+        try {
+            List<KhoaHoc> list = dao.select();
+            for (KhoaHoc kh : list) {
+                Object[] row = {
+                    kh.getMaKH(),
+                    kh.getMaCD(),
+                    kh.getThoiLuong(),
+                    kh.getHocPhi(),
+                    XDate.toString(kh.getNgayKG()),
+                    kh.getMaNV(),
+                    XDate.toString(kh.getNgayTao())
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    void insert() {
+        KhoaHoc model = getModel();
+        model.setNgayTao(new Date());
+        try {
+            dao.insert(model);
+            this.load();
+            this.clear();
+            DialogHelper.alert(this, "Thêm mới thành công!");
+        } catch (HeadlessException e) {
+            DialogHelper.alert(this, "Thêm mới thất bại!");
+        }
+    }
+
+    void update() {
+        KhoaHoc model = getModel();
+        try {
+            dao.update(model);
+            this.load();
+            DialogHelper.alert(this, "Cập nhật thành công!");
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Cập nhật thất bại!");
+        }
+    }
+
+    void delete() {
+        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa khóa học này?")) {
+            Integer makh = Integer.valueOf(cbbCD.getToolTipText());
+            try {
+                dao.delete(makh);
+                this.load();
+                this.clear();
+                DialogHelper.alert(this, "Xóa thành công!");
+            } catch (Exception e) {
+                DialogHelper.alert(this, "Xóa thất bại!");
+            }
+        }
+    }
+
+    void clear() {
+        KhoaHoc model = new KhoaHoc();
+        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
+        model.setMaCD(chuyenDe.getMaCD());
+        model.setMaNV(ShareHelper.USER.getMaNV());
+        model.setNgayKG(XDate.add(30));
+        model.setNgayTao(XDate.now());
+        this.setModel(model);
+    }
+
+     void edit() {
+        try {
+
+            Integer makh = (Integer) tblQLKH.getValueAt(this.index, 0);
+            KhoaHoc model = dao.findById(makh);
+            if (model != null) {
+                this.setModel(model);
+                this.setStatus(false);
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+
+    }
+
+    private void setModel(KhoaHoc model) {
+        cbbCD.setToolTipText(String.valueOf(model.getMaKH()));
+        cbbCD.setSelectedItem(cddao.findById(model.getMaCD()));
+        txtNgayKG.setText(XDate.toString(model.getNgayKG()));
+        txtHocPhi.setText(String.valueOf(model.getHocPhi()));
+        txtThoiLuong.setText(String.valueOf(model.getThoiLuong()));
+        txtNguoiTao.setText(model.getMaNV());
+        txtngaytao.setText(XDate.toString(model.getNgayTao()));
+        txtGhiChu.setText(model.getGhiChu());
+    }
+
+    private void setStatus(boolean insertable) {
+        btnThem.setEnabled(insertable);
+        btnSua.setEnabled(!insertable);
+        btnXoa.setEnabled(!insertable);
+        boolean first = this.index > 0;
+        boolean last = this.index < tblQLKH.getRowCount() - 1;
+        btnFirst.setEnabled(!insertable && first);
+        btnPrivios.setEnabled(!insertable && first);
+        btnLast.setEnabled(!insertable && last);
+        btnNext.setEnabled(!insertable && last);
+        btnHocVien.setVisible(!insertable);
+    }
+
+    void selectComboBox() {
+        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
+        txtThoiLuong.setText(String.valueOf(chuyenDe.getThoiLuong()));
+        txtHocPhi.setText(String.valueOf(chuyenDe.getHocPhi()));
+    }
+
+    void openHocVien() {
+        Integer id = Integer.valueOf(cbbCD.getToolTipText());
+        new QUANLYHOCVIEN(id).setVisible(true);
+    }
+
+    void fillComboBox() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbbCD.getModel();
+        model.removeAllElements();
+        try {
+            List<ChuyenDe> list = cddao.selectAll();
+            for (ChuyenDe cd : list) {
+                model.addElement(cd.getTenCD());
+            }
+        } catch (Exception e) {
+            DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
+        }
+    }
+
+    KhoaHoc getModel() {
+        KhoaHoc model = new KhoaHoc();
+        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
+        model.setMaCD(chuyenDe.getMaCD());
+        model.setNgayKG(XDate.toDate(txtNgayKG.getText()));
+        model.setHocPhi(Double.valueOf(txtHocPhi.getText()));
+        model.setThoiLuong(Integer.valueOf(txtThoiLuong.getText()));
+        model.setGhiChu(txtGhiChu.getText());
+        model.setMaNV(ShareHelper.USER.getMaNV());
+        model.setNgayTao(XDate.toDate(txtngaytao.getText()));
+        model.setMaKH(Integer.valueOf(cbbCD.getToolTipText()));
+
+        return model;
+    }
+
 }
