@@ -75,24 +75,47 @@ select * from ChuyenDe
 
 
 INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES ('NV01','123' , N'Nguyễn Văn A', 0)
+INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES ('NV02','123' , N'Nguyễn Thi An', 0)
+INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES ('NV03','123' , N'Nguyễn Văn Chung', 0)
 select * from NhanVien
 
 insert into ChuyenDe(MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) values ('CD01', N'Chuyên đề 01', 100, 2,null,null)
 insert into ChuyenDe(MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) values	('CD02', N'Chuyên đề 02', 200, 3,null,null)
+insert into ChuyenDe(MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) values	('CD03', N'Chuyên đề 03', 500, 3,null,null)
+insert into ChuyenDe(MaCD, TenCD, HocPhi, ThoiLuong, Hinh, MoTa) values	('CD04', N'Chuyên đề 04', 400, 3,null,null)
 
 insert into KhoaHoc( MaCD, HocPhi, ThoiLuong, NgayKG, GhiChu, MaNV, NgayTao) 
 values ( 'CD01', 300, 3, '11/8/2021', null, 'NV01', '11/1/2021'),
 		( 'CD02', 400, 2, '11/10/2021', null, 'NV01', '11/5/2021')
 
+insert into KhoaHoc( MaCD, HocPhi, ThoiLuong, NgayKG, GhiChu, MaNV, NgayTao) 
+values ( 'CD03', 300, 3, '9/8/2021', null, 'NV02', '11/2/2021'),
+		( 'CD04', 400, 2, '10/10/2021', null, 'NV03', '8/5/2021')
+
+insert into KhoaHoc( MaCD, HocPhi, ThoiLuong, NgayKG, GhiChu, MaNV, NgayTao) 
+values ( 'CD01', 300, 3, '11/8/2021', null, 'NV01', '11/1/2021'),
+values ( 'CD01', 300, 3, '11/8/2021', null, 'NV01', '11/1/2021'),
+values ( 'CD01', 300, 3, '11/8/2021', null, 'NV01', '11/1/2021')
+
 insert into NguoiHoc values ('NH01', N'Nguyễn Thành Trung', '5/4/2000', 1, '0987654321', 'trung123@fpt.edu.vn', null, 'NV01','9/9/2021'), 
 							('NH02', N'Phạm Thị Hà', '3/4/1999', 1, '0987543123', 'HaPT@fpt.edu.vn', null, 'NV01','9/10/2021')
 
+insert into NguoiHoc values ('NH03', N'Nguyễn Van Chien', '5/6/2000', 1, '0987654898', 'chien@fpt.edu.vn', null, 'NV02','9/9/2021'), 
+							('NH04', N'Phạm Thị Trang', '11/9/1998', 1, '0978943123', 'trang@fpt.edu.vn', null, 'NV02','9/10/2021')
 
 insert into HocVien(MaKH, MaNH, Diem) values (1, 'NH01', 9), 
 											(2, 'NH02', 10)
+											
+insert into HocVien(MaKH, MaNH, Diem) values (3, 'NH03', 9), 
+											(4, 'NH04', 10)
+
+insert into HocVien(MaKH, MaNH, Diem) values (3, 'NH01', 9), 
+											(2, 'NH04', 10)
 select * from NguoiHoc
 
 select * from KhoaHoc
+
+select * from HocVien
 	------ nhan vien -------------
 --Thêm mới
 	INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)
