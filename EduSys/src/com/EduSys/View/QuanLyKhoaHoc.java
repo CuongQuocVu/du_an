@@ -32,6 +32,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.load();
+        fillComboBox();
     }
 
     /**
@@ -99,15 +100,35 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnThem);
 
         btnSua.setText("Sửa");
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSua);
 
         btnXoa.setText("Xóa");
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnXoa);
 
         btnMoi.setText("Mới");
+        btnMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMoiActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnMoi);
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
@@ -313,8 +334,8 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLastActionPerformed
 
     private void btnHocVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHocVienActionPerformed
-
-        //JFrame hocvien = new QUANLYHOCVIEN();
+        openHocVien();
+        
     }//GEN-LAST:event_btnHocVienActionPerformed
 
     private void tblQLKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLKHMouseClicked
@@ -329,6 +350,22 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_tblQLKHMouseClicked
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        insert();
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        update();
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
+        clear();
+    }//GEN-LAST:event_btnMoiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -410,6 +447,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void load() {
+        
         DefaultTableModel model = (DefaultTableModel) tblQLKH.getModel();
         model.setRowCount(0);
         try {
@@ -470,18 +508,17 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     void clear() {
-        KhoaHoc model = new KhoaHoc();
-        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
-        model.setMaCD(chuyenDe.getMaCD());
-        model.setMaNV(ShareHelper.USER.getMaNV());
-        model.setNgayKG(XDate.add(30));
-        model.setNgayTao(XDate.now());
-        this.setModel(model);
+        txtNgayKG.setText("");
+        txtGhiChu.setText("");
+        txtHocPhi.setText("");
+        txtNguoiTao.setText("");
+        txtThoiLuong.setText("");
+        txtngaytao.setText("");
+        cbbCD.setSelectedIndex(0);
     }
 
      void edit() {
         try {
-
             Integer makh = (Integer) tblQLKH.getValueAt(this.index, 0);
             KhoaHoc model = dao.findById(makh);
             if (model != null) {
@@ -491,7 +528,6 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         } catch (Exception e) {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
-
     }
 
     private void setModel(KhoaHoc model) {
@@ -525,7 +561,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     void openHocVien() {
-        Integer id = Integer.valueOf(cbbCD.getToolTipText());
+        Integer id = Integer.valueOf(cbbCD.getToolTipText());        
         new QUANLYHOCVIEN(id).setVisible(true);
     }
 
