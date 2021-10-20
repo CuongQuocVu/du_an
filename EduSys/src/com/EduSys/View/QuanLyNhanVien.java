@@ -539,6 +539,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private void delete() {
         if (!ShareHelper.isManager()) {
             DialogHelper.alert(this, "Bạn không có quyền xóa nhân viên");
+            return;
         } else {
             String maNV = this.txtMaNhanVien.getText();
             if (maNV.isEmpty()) {

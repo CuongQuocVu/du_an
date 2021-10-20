@@ -363,9 +363,9 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_tblQLKHMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-       if(check(txtNgayKG.getText())){
-           insert();
-       }        
+        if (check(txtNgayKG.getText())) {
+            insert();
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -490,9 +490,8 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         }
     }
 
-    
     void insert() {
-        
+
         KhoaHoc model = getModel();
         model.setNgayTao(new Date());
         try {
@@ -517,15 +516,19 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     void delete() {
-        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa khóa học này?")) {
-            Integer makh = Integer.valueOf(cbbCD.getToolTipText());
-            try {
-                dao.delete(makh);
-                this.load();
-                this.clear();
-                DialogHelper.alert(this, "Xóa thành công!");
-            } catch (Exception e) {
-                DialogHelper.alert(this, "Xóa thất bại!");
+        if (!ShareHelper.isManager()) {
+            DialogHelper.alert(this, "Bạn không có quyền xóa");
+        } else {
+            if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa khóa học này?")) {
+                Integer makh = Integer.valueOf(cbbCD.getToolTipText());
+                try {
+                    dao.delete(makh);
+                    this.load();
+                    this.clear();
+                    DialogHelper.alert(this, "Xóa thành công!");
+                } catch (Exception e) {
+                    DialogHelper.alert(this, "Xóa thất bại!");
+                }
             }
         }
     }

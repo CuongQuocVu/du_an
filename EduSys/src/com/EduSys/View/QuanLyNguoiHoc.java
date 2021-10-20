@@ -26,15 +26,15 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
      */
     int index = 0;
     NguoiHocDao dao = new NguoiHocDao();
-    
+
     public QuanLyNguoiHoc() {
         initComponents();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         jTabbedPane1.setSelectedIndex(1);
-        
+
         load();
-        
+
     }
 
     /**
@@ -403,12 +403,12 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        this.update();        
+        this.update();
         this.load();
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         try {
             if (check()) {
                 this.insert();
@@ -420,17 +420,17 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
-        this.tim(); 
+        this.tim();
         jTabbedPane1.setSelectedIndex(0);// TODO add your handling code here:
     }//GEN-LAST:event_btnTimActionPerformed
 
     private void tblQLNHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNHMouseClicked
-        
-         this.index = tblQLNH.rowAtPoint(evt.getPoint());
-            if (this.index >= 0) {
-                this.edit();
-                jTabbedPane1.setSelectedIndex(0);
-            }
+
+        this.index = tblQLNH.rowAtPoint(evt.getPoint());
+        if (this.index >= 0) {
+            this.edit();
+            jTabbedPane1.setSelectedIndex(0);
+        }
 //        if (evt.getClickCount() == 2) {
 //            this.index = tblQLNH.rowAtPoint(evt.getPoint());
 //            if (this.index >= 0) {
@@ -537,7 +537,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-    
+
     void insert() {
         NguoiHoc model = getModel();
         try {
@@ -550,7 +550,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-    
+
     void update() {
         NguoiHoc model = getModel();
         try {
@@ -561,23 +561,27 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Cập nhật thất bại!");
         }
     }
-    
+
     void delete() {
-        if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa người học này?")) {
-            String manh = txtMaNguoiHoc.getText();
-            try {
-                dao.delete(manh);
-                this.load();
-                this.clear();
-                DialogHelper.alert(this, "Xóa thành công!");
-            } catch (HeadlessException e) {
-                DialogHelper.alert(this, "Xóa thất bại!");
+        if (!ShareHelper.isManager()) {
+            DialogHelper.alert(this, "Bạn không có quyền xóa");
+        } else {
+            if (DialogHelper.confirm(this, "Bạn thực sự muốn xóa người học này?")) {
+                String manh = txtMaNguoiHoc.getText();
+                try {
+                    dao.delete(manh);
+                    this.load();
+                    this.clear();
+                    DialogHelper.alert(this, "Xóa thành công!");
+                } catch (HeadlessException e) {
+                    DialogHelper.alert(this, "Xóa thất bại!");
+                }
             }
         }
     }
-    
-    void tim(){
-         try {
+
+    void tim() {
+        try {
             String manh = txtTimKiem.getText().trim();
             NguoiHoc model = dao.findById(manh);
             if (model != null) {
@@ -588,6 +592,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
+
     void edit() {
         try {
             String manh = (String) tblQLNH.getValueAt(this.index, 0);
@@ -600,7 +605,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             DialogHelper.alert(this, "Lỗi truy vấn dữ liệu!");
         }
     }
-    
+
     void clear() {
         txtDienThoai.setText("");
         txtEmail.setText("");
@@ -611,7 +616,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         txtTimKiem.setText("");
         cbbGioiTinh.setSelectedIndex(0);
     }
-    
+
     void setModel(NguoiHoc model) {
         txtMaNguoiHoc.setText(model.getMaNH());
         txtHoVaTen.setText(model.getHoTen());
@@ -621,7 +626,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         txtEmail.setText(model.getEmail());
         txtGhiChu.setText(model.getGhiChu());
     }
-    
+
     NguoiHoc getModel() {
         NguoiHoc model = new NguoiHoc();
         model.setMaNH(txtMaNguoiHoc.getText());
@@ -635,9 +640,9 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         model.setNgayDK(XDate.now());
         return model;
     }
-    
-    void setStatus(boolean insertable) {       
-       // jButton1.setEnabled(insertable);
+
+    void setStatus(boolean insertable) {
+        // jButton1.setEnabled(insertable);
         btnSua.setEnabled(!insertable);
         btnXoa.setEnabled(!insertable);
         boolean first = this.index > 0;
@@ -647,7 +652,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
         btnLast.setEnabled(!insertable && last);
         btnNext.setEnabled(!insertable && last);
     }
-    
+
     public boolean check() {
         if (txtMaNguoiHoc.getText().isEmpty() || txtNgaySinh.getText().isEmpty() || txtDienThoai.getText().isEmpty()
                 || txtHoVaTen.getText().isEmpty() || txtGhiChu.getText().isEmpty()) {
@@ -657,8 +662,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Sai định dạng email", "Error", 1);
             txtEmail.requestFocus();
             return false;
-        } 
-        else if (!(txtDienThoai.getText()).matches("[0-9]{1,11}")) {
+        } else if (!(txtDienThoai.getText()).matches("[0-9]{1,11}")) {
             JOptionPane.showMessageDialog(rootPane, "Học phí phải nhập số", "Error", 1);
             txtDienThoai.requestFocus();
             return false;
@@ -671,7 +675,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
             }
         }
         return true;
-        
+
     }
 ;
 }

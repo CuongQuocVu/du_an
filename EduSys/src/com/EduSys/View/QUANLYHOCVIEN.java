@@ -313,7 +313,7 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
             } else {
                 model.setMaKH(MaKH);
                 model.setMaNH(nguoiHoc.getMaNH());
-               // model.setDiem();
+                // model.setDiem();
                 hvdao.insert2(model);
                 //this.fillComboBox();
                 this.fillGridView();
@@ -331,32 +331,36 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
             Double diem = (Double) tblGridView.getValueAt(i, 3);
             Boolean isDelete = (Boolean) tblGridView.getValueAt(i, 4);
             //System.out.println(diem);
-            if (isDelete) {
-                hvdao.delete(maHV);
-            }
-
-            if (diem >= 0 || diem <= 10) {
-                HocVien model = new HocVien();
-                model.setMaHV(maHV);
-                model.setMaKH(MaKH);
-                model.setMaNH(maNH);
-                model.setDiem(diem);
-                hvdao.update(model);
-
+            if (!ShareHelper.isManager()) {
+                DialogHelper.alert(this, "Bạn không có quyền xóa");
+                return;
             } else {
-                HocVien model = new HocVien();
-                model.setMaHV(maHV);
-                model.setMaKH(MaKH);
-                //model.setDiem(diem);
-                model.setMaNH(maNH);
-                hvdao.update2(model);
+                if (isDelete) {
+                    hvdao.delete(maHV);
+                }
 
+                if (diem >= 0 || diem <= 10) {
+                    HocVien model = new HocVien();
+                    model.setMaHV(maHV);
+                    model.setMaKH(MaKH);
+                    model.setMaNH(maNH);
+                    model.setDiem(diem);
+                    hvdao.update(model);
+
+                } else {
+                    HocVien model = new HocVien();
+                    model.setMaHV(maHV);
+                    model.setMaKH(MaKH);
+                    //model.setDiem(diem);
+                    model.setMaNH(maNH);
+                    hvdao.update2(model);
+
+                }
+
+                DialogHelper.alert(this, "Cập nhật thành công!");
+                this.fillComboBox();
+                this.fillGridView();
             }
-
-            DialogHelper.alert(this, "Cập nhật thành công!");
-            this.fillComboBox();
-            this.fillGridView();
-
         }
     }
 

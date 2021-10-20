@@ -7,6 +7,7 @@ package com.EduSys.View;
 
 import com.EduSys.dao.ChuyenDeDao;
 import com.EduSys.helper.DialogHelper;
+import com.EduSys.helper.ShareHelper;
 import com.EduSys.helper.XImage;
 import com.EduSys.model.ChuyenDe;
 import java.awt.Image;
@@ -152,7 +153,7 @@ public class QuanLyChuyenDe extends javax.swing.JFrame {
                 e.printStackTrace();
             }
             Image dimg = img.getScaledInstance(lblHinh.getWidth(), lblHinh.getHeight(), Image.SCALE_SMOOTH);
-            ImageIcon icon  = new ImageIcon(dimg);
+            ImageIcon icon = new ImageIcon(dimg);
             lblHinh.setIcon(icon);
             lblHinh.setText("");
         }
@@ -161,7 +162,7 @@ public class QuanLyChuyenDe extends javax.swing.JFrame {
 
     void setStatus(boolean insertable) {
         txtMaCD.setEditable(insertable);
-       // btnThem.setEnabled(insertable);
+        // btnThem.setEnabled(insertable);
         btnSua.setEnabled(!insertable);
         btnXoa.setEnabled(!insertable);
         boolean first = this.index > 0;
@@ -184,15 +185,19 @@ public class QuanLyChuyenDe extends javax.swing.JFrame {
     }
 
     void delete() {
-        if (DialogHelper.confirm(this, "Bạn có muốn xóa hay không?")) {
-            String macd = txtMaCD.getText();
-            try {
-                dao.delete(macd);
-                this.load();
-                this.clear();
-                DialogHelper.alert(this, "Xóa thành công!");
-            } catch (Exception e) {
-                DialogHelper.alert(this, "Xóa thất bại!");
+        if (!ShareHelper.isManager()) {
+            DialogHelper.alert(this, "Bạn không có quyền xóa");
+        } else {
+            if (DialogHelper.confirm(this, "Bạn có muốn xóa hay không?")) {
+                String macd = txtMaCD.getText();
+                try {
+                    dao.delete(macd);
+                    this.load();
+                    this.clear();
+                    DialogHelper.alert(this, "Xóa thành công!");
+                } catch (Exception e) {
+                    DialogHelper.alert(this, "Xóa thất bại!");
+                }
             }
         }
     }
