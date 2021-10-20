@@ -18,14 +18,15 @@ import java.util.List;
 
 public class KhoaHocDao {
     public void insert(KhoaHoc model) {
-        String sql = "INSERT INTO KhoaHoc (MaCD, HocPhi, ThoiLuong, NgayKG, GhiChu, MaNV) VALUES (?, ?, ?, ?, ?,?)";
+        String sql = "INSERT INTO KhoaHoc (MaCD, HocPhi, ThoiLuong, NgayKG, GhiChu, MaNV, NgayTao) VALUES (?, ?, ?, ?, ?,?,?)";
         JDBC_Helper.executeUpdate(sql,
                 model.getMaCD(),
                 model.getHocPhi(),
                 model.getThoiLuong(),
                 model.getNgayKG(),
                 model.getGhiChu(),
-                model.getMaNV());
+                model.getMaNV(),
+                model.getNgayTao());
     }
 
     public void update(KhoaHoc model) {

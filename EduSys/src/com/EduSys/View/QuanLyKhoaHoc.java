@@ -13,9 +13,12 @@ import com.EduSys.helper.XDate;
 import com.EduSys.model.ChuyenDe;
 import com.EduSys.model.KhoaHoc;
 import java.awt.HeadlessException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -34,6 +37,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.load();
         fillComboBox();
+        setDisable();
     }
 
     /**
@@ -150,6 +154,12 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
             }
         });
         jPanel4.add(btnLast);
+
+        cbbCD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbCDActionPerformed(evt);
+            }
+        });
 
         lblNgaySinh.setText("Ngày tạo");
 
@@ -353,7 +363,9 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }//GEN-LAST:event_tblQLKHMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        insert();
+       if(check(txtNgayKG.getText())){
+           insert();
+       }        
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
@@ -367,6 +379,14 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         clear();
     }//GEN-LAST:event_btnMoiActionPerformed
+
+    private void cbbCDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbCDActionPerformed
+        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
+        txtThoiLuong.setText(String.valueOf(chuyenDe.getThoiLuong()));
+        txtHocPhi.setText(String.valueOf(chuyenDe.getHocPhi()));
+        txtNguoiTao.setText(ShareHelper.USER.getMaNV());
+
+    }//GEN-LAST:event_cbbCDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -470,7 +490,9 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         }
     }
 
+    
     void insert() {
+        
         KhoaHoc model = getModel();
         model.setNgayTao(new Date());
         try {
@@ -535,7 +557,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         String MaCD = (String) tblQLKH.getValueAt(this.index, 1);
         ChuyenDe cd = cddao.findById(MaCD);
         Object tenCD = cd.getTenCD();
-        cbbCD.setSelectedItem(tenCD);
+        cbbCD.getModel().setSelectedItem(tenCD);
         //cbbCD.setSelectedIndex(2);
 
         cbbCD.setToolTipText(String.valueOf(model.getMaKH()));
@@ -550,7 +572,7 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     private void setStatus(boolean insertable) {
-        btnThem.setEnabled(insertable);
+        btnThem.setEnabled(!insertable);
         btnSua.setEnabled(!insertable);
         btnXoa.setEnabled(!insertable);
         boolean first = this.index > 0;
@@ -560,6 +582,10 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         btnLast.setEnabled(!insertable && last);
         btnNext.setEnabled(!insertable && last);
         btnHocVien.setVisible(!insertable);
+        txtHocPhi.setEnabled(false);
+        txtThoiLuong.setEnabled(false);
+        txtngaytao.setEnabled(false);
+        txtNguoiTao.setEnabled(false);
     }
 
     void selectComboBox() {
@@ -569,8 +595,9 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
     }
 
     void openHocVien() {
-        Integer id = Integer.valueOf(cbbCD.getToolTipText());
-        new QUANLYHOCVIEN(id).setVisible(true);
+        //Integer id = Integer.valueOf(cbbCD.getToolTipText());
+        int makh = (int) tblQLKH.getValueAt(this.index, 0);
+        new QUANLYHOCVIEN(makh).setVisible(true);
     }
 
     void fillComboBox() {
@@ -588,8 +615,15 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
 
     KhoaHoc getModel() {
         KhoaHoc model = new KhoaHoc();
-        ChuyenDe chuyenDe = (ChuyenDe) cbbCD.getSelectedItem();
-        model.setMaCD(chuyenDe.getMaCD());
+        String tenCD = cbbCD.getSelectedItem().toString();
+        List<ChuyenDe> lstCD = (List<ChuyenDe>) cddao.selectAll();
+
+        for (int i = 0; i < lstCD.size(); i++) {
+            if (lstCD.get(i).getTenCD().equals(tenCD)) {
+                model.setMaCD(lstCD.get(i).getMaCD());
+            }
+        }
+
         model.setNgayKG(XDate.toDate(txtNgayKG.getText()));
         model.setHocPhi(Double.valueOf(txtHocPhi.getText()));
         model.setThoiLuong(Integer.valueOf(txtThoiLuong.getText()));
@@ -601,4 +635,39 @@ public class QuanLyKhoaHoc extends javax.swing.JFrame {
         return model;
     }
 
+    void setDisable() {
+        txtHocPhi.setEnabled(false);
+        txtThoiLuong.setEnabled(false);
+        txtngaytao.setEnabled(false);
+        txtNguoiTao.setEnabled(false);
+    }
+
+    public boolean check(String inDate) {
+
+        if (txtNgayKG.getText().equals("")) {
+            DialogHelper.alert(this, "Không được để trống ngày khai giảng");
+            return false;
+        }
+
+        if (inDate == null) {
+            return false;
+        }
+
+        //set the format to use as a constructor argument
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (inDate.trim().length() != dateFormat.toPattern().length()) {
+            return false;
+        }
+
+        dateFormat.setLenient(false);
+
+        try {
+            //parse the inDate parameter
+            dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
+    }
 }

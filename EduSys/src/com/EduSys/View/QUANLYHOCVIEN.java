@@ -70,10 +70,14 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
             }
         });
 
-        txtDiem.setText("-1");
         txtDiem.setName("Điểm"); // NOI18N
 
         btnThem.setText("Thêm");
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlHVKhacLayout = new javax.swing.GroupLayout(pnlHVKhac);
         pnlHVKhac.setLayout(pnlHVKhacLayout);
@@ -127,6 +131,11 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
             }
         });
         tblGridView.setRowHeight(25);
+        tblGridView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblGridViewMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblGridView);
 
         buttonGroup1.add(rdoTatCa);
@@ -293,60 +302,62 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
     void insert() {
         NguoiHoc nguoiHoc = (NguoiHoc) cboNguoiHoc.getSelectedItem();
         HocVien model = new HocVien();
-        model.setMaKH(MaKH);
-        model.setMaNH(nguoiHoc.getMaNH());
-        model.setDiem(Double.valueOf(txtDiem.getText()));
+
         try {
-            hvdao.insert(model);
-            this.fillComboBox();
-            this.fillGridView();
+            if (model.getDiem() <= 10 || model.getDiem() >= 0) {
+//                model.setMaKH(MaKH);
+//                model.setMaNH(nguoiHoc.getMaNH());
+//                model.setDiem(Double.valueOf(txtDiem.getText()));                
+//                hvdao.insert(model);                
+//                this.fillGridView();
+            } else {
+                model.setMaKH(MaKH);
+                model.setMaNH(nguoiHoc.getMaNH());
+               // model.setDiem();
+                hvdao.insert2(model);
+                //this.fillComboBox();
+                this.fillGridView();
+            }
         } catch (Exception e) {
+            e.printStackTrace();
             DialogHelper.alert(this, "Lỗi thêm học viên vào khóa học!");
         }
     }
 
-    //chỉ sửa điểm hocVien, xóa hocVien bị tích
-    //cập nhật vào CSDL, load lại bảng, load lại cbo
     void update() {
-        txtDiem.setBackground(white);
-        int a = 0, b = 0;
         for (int i = 0; i < tblGridView.getRowCount(); i++) {
-            Integer mahv = (Integer) tblGridView.getValueAt(i, 0);  //lấy maHV từ bảng(ko sửa đc)
-            String manh = (String) tblGridView.getValueAt(i, 1);  //lấy maNH từ bảng(ko sửa đc)
-            Double diem = (Double) tblGridView.getValueAt(i, 3);   //lấy điểm (sửa đc)
+            Integer maHV = (Integer) tblGridView.getValueAt(i, 0);
+            String maNH = (String) tblGridView.getValueAt(i, 1);
+            Double diem = (Double) tblGridView.getValueAt(i, 3);
             Boolean isDelete = (Boolean) tblGridView.getValueAt(i, 4);
+            //System.out.println(diem);
             if (isDelete) {
-                a++;
+                hvdao.delete(maHV);
             }
-            if (isDelete && ShareHelper.USER.isManager()) {     //nếu có tích thì xóa bản ghi đó đi
-                hvdao.delete(mahv);
-            } else {           //còn ko tích thì cập 
-                if (ShareHelper.USER.isManager() == false) {
-                    tblGridView.setValueAt(false, i, 3);
-                }
-                if ((diem >= 0 && diem <= 10) || diem == -1) {
-                    HocVien model = new HocVien();
-                    model.setMaHV(mahv);
-                    model.setMaKH(MaKH);
-                    model.setMaNH(manh);
-                    model.setDiem(diem);
-                    hvdao.update(model);
-                } else {
-                    b++;
-                }
+
+            if (diem >= 0 || diem <= 10) {
+                HocVien model = new HocVien();
+                model.setMaHV(maHV);
+                model.setMaKH(MaKH);
+                model.setMaNH(maNH);
+                model.setDiem(diem);
+                hvdao.update(model);
+
+            } else {
+                HocVien model = new HocVien();
+                model.setMaHV(maHV);
+                model.setMaKH(MaKH);
+                //model.setDiem(diem);
+                model.setMaNH(maNH);
+                hvdao.update2(model);
+
             }
+
+            DialogHelper.alert(this, "Cập nhật thành công!");
+            this.fillComboBox();
+            this.fillGridView();
+
         }
-        this.fillComboBox();
-        this.fillGridView();
-        if (a > 0 && ShareHelper.USER.isManager() == false) {
-            DialogHelper.alert(this, "Chỉ trưởng phòng mới được xóa học viên\nbạn chỉ được thêm học viên và điểm");
-            return;
-        }
-        if (b > 0) {
-            DialogHelper.alert(this, "Điểm phải là số thực từ 0-10 hoặc chưa nhập (-1)");
-            return;
-        }
-        DialogHelper.alert(this, "Cập nhật thành công!");
     }
 
 
@@ -388,8 +399,18 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
     }//GEN-LAST:event_cboNguoiHocActionPerformed
 
     private void btnCapnhatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapnhatActionPerformed
-        // TODO add your handling code here:
+        update();
     }//GEN-LAST:event_btnCapnhatActionPerformed
+
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
+        if (checkDiem()) {
+            insert();
+        }
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void tblGridViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGridViewMouseClicked
+
+    }//GEN-LAST:event_tblGridViewMouseClicked
 
     /**
      * @param args the command line arguments
@@ -442,4 +463,18 @@ public class QUANLYHOCVIEN extends javax.swing.JFrame {
     private javax.swing.JTable tblGridView;
     private javax.swing.JTextField txtDiem;
     // End of variables declaration//GEN-END:variables
+
+    public boolean checkDiem() {
+        if (txtDiem.getText().isEmpty()) {
+            return true;
+        } else {
+            double diem = Double.parseDouble(txtDiem.getText());
+            if (diem >= 10 || diem <= 0) {
+                DialogHelper.alert(this, "diem phải trong khoang tư 0 đến 10");
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

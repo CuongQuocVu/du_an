@@ -637,7 +637,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
     }
     
     void setStatus(boolean insertable) {       
-        jButton1.setEnabled(insertable);
+       // jButton1.setEnabled(insertable);
         btnSua.setEnabled(!insertable);
         btnXoa.setEnabled(!insertable);
         boolean first = this.index > 0;
@@ -653,7 +653,7 @@ public class QuanLyNguoiHoc extends javax.swing.JFrame {
                 || txtHoVaTen.getText().isEmpty() || txtGhiChu.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin");
             return false;
-        } else if (!(txtEmail.getText()).matches("^[\\w-_\\.]+\\@[\\w&&[^0-9]]+\\.com$")) {
+        } else if (!(txtEmail.getText()).matches("\\w+@\\w+(\\.\\w+)+")) {
             JOptionPane.showMessageDialog(rootPane, "Sai định dạng email", "Error", 1);
             txtEmail.requestFocus();
             return false;

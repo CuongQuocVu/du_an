@@ -358,7 +358,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
 
     private void btnMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoiActionPerformed
         this.clear();
-        
+
     }//GEN-LAST:event_btnMoiActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -513,23 +513,27 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
 
     private void update() {
-        if (check()) {
-            NhanVien nv = getForm();
-            String xacNhanMK = new String(txtPassword.getPassword());
-            try {
-                if (!nv.getMatKhau().equals(xacNhanMK)) {
-                    DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
-                } else {
-                    nvDAO.update(nv);
-                    fillToTable();
-                    DialogHelper.alert(this, "Sửa thành công");
+        if (!ShareHelper.isManager()) {
+            DialogHelper.alert(this, "Bạn không có quyền sưa");
+        } else {
+
+            if (check()) {
+                NhanVien nv = getForm();
+                String xacNhanMK = new String(txtPassword.getPassword());
+                try {
+                    if (!nv.getMatKhau().equals(xacNhanMK)) {
+                        DialogHelper.alert(this, "Xác nhận mật khẩu không trùng");
+                    } else {
+                        nvDAO.update(nv);
+                        fillToTable();
+                        DialogHelper.alert(this, "Sửa thành công");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    DialogHelper.alert(this, "Sửa thất bại");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                DialogHelper.alert(this, "Sửa thất bại");
             }
         }
-
     }
 
     private void delete() {

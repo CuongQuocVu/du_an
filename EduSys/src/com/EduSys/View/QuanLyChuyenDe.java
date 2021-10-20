@@ -161,7 +161,7 @@ public class QuanLyChuyenDe extends javax.swing.JFrame {
 
     void setStatus(boolean insertable) {
         txtMaCD.setEditable(insertable);
-        btnThem.setEnabled(insertable);
+       // btnThem.setEnabled(insertable);
         btnSua.setEnabled(!insertable);
         btnXoa.setEnabled(!insertable);
         boolean first = this.index > 0;

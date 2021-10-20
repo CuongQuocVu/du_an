@@ -22,16 +22,36 @@ public class HocVienDao {
         String sql = "INSERT INTO HocVien(MaKH, MaNH, Diem) VALUES(?, ?, ?)";
         JDBC_Helper.executeUpdate(sql,
                 model.getMaKH(),
-                model.getMaHV(),
+                model.getMaNH(),
                 model.getDiem());
     }
 
+    public void insert2(HocVien model) {
+        String sql = "INSERT INTO HocVien (MaKH, MaNH,Diem) VALUES (?, ?,null)";
+        JDBC_Helper.executeUpdate(sql,
+                model.getMaKH(),
+                model.getMaNH()
+                
+        );
+    }
+   
+
+   
     public void update(HocVien model) {
         String sql = "UPDATE HocVien SET MaKH=?, MaNH=?, Diem=? WHERE MaHV=?";
         JDBC_Helper.executeUpdate(sql,
                 model.getMaKH(),
                 model.getMaNH(),
                 model.getDiem(),
+                model.getMaHV());
+    }
+
+    public void update2(HocVien model) {
+        String sql = "UPDATE HocVien SET MaKH=?, Diem= null, MaNH=? WHERE MaHV=?";
+        JDBC_Helper.executeUpdate(sql,
+                model.getMaKH(),
+                model.getMaNH(),
+                // model.getDiem(),
                 model.getMaHV());
     }
 

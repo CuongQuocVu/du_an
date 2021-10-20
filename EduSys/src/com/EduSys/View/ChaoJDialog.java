@@ -133,8 +133,7 @@ public class ChaoJDialog extends javax.swing.JFrame {
                 }else{
                     ChaoJDialog.this.dispose();
                     timer.stop();
-                    JFrame login = new DangNhap();
-                    login.setVisible(true);
+                    new DangNhap().setVisible(true);
                 }
             }
         });

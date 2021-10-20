@@ -7,8 +7,11 @@ package com.EduSys.View;
 
 import com.EduSys.helper.DialogHelper;
 import com.EduSys.helper.ShareHelper;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,7 +56,7 @@ public class MainMenu extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JToolBar.Separator();
-        jButton6 = new javax.swing.JButton();
+        btnHuongDan = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -80,7 +83,7 @@ public class MainMenu extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
-        jMenuItem13 = new javax.swing.JMenuItem();
+        btnHuongdan = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jMenuItem14 = new javax.swing.JMenuItem();
 
@@ -146,11 +149,16 @@ public class MainMenu extends javax.swing.JFrame {
         jToolBar1.add(jButton5);
         jToolBar1.add(jSeparator4);
 
-        jButton6.setText("Hướng dẫn");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton6);
+        btnHuongDan.setText("Hướng dẫn");
+        btnHuongDan.setFocusable(false);
+        btnHuongDan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnHuongDan.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnHuongDan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuongDanActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnHuongDan);
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setToolTipText("");
@@ -299,9 +307,14 @@ public class MainMenu extends javax.swing.JFrame {
 
         jMenu4.setText("Trợ giúp");
 
-        jMenuItem13.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItem13.setText("Hướng dẫn sử dụng");
-        jMenu4.add(jMenuItem13);
+        btnHuongdan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        btnHuongdan.setText("Hướng dẫn sử dụng");
+        btnHuongdan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuongdanActionPerformed(evt);
+            }
+        });
+        jMenu4.add(btnHuongdan);
         jMenu4.add(jSeparator5);
 
         jMenuItem14.setText("Giới thiệu sản phẩm");
@@ -399,28 +412,40 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem14ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        // người học từng năm      
-        new ThongKe(0).setVisible(true);
+        // người học từng năm   0  
+        THONGKE.tabIndex = 0;
+        new THONGKE().setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        //bảng điểm theo khóa
-        new ThongKe(1).setVisible(true);
+        //bảng điểm theo khóa 1
+        THONGKE.tabIndex = 1;
+        new THONGKE().setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        //doanh thu
+        //doanh thu 3
         if (!ShareHelper.isManager()) {
             DialogHelper.alert(this, "Bạn không có quyền xem doanh thu");
         } else {
-            new ThongKe(3).setVisible(true);
+            THONGKE.tabIndex = 3;
+            new THONGKE().setVisible(true);
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // điểm từng khóa học
-        new ThongKe(2).setVisible(true);
+        // điểm từng khóa học 2
+        THONGKE.tabIndex = 2;
+        new THONGKE().setVisible(true);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void btnHuongDanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuongDanActionPerformed
+        openWebsite();
+    }//GEN-LAST:event_btnHuongDanActionPerformed
+
+    private void btnHuongdanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuongdanActionPerformed
+        openWebsite();
+    }//GEN-LAST:event_btnHuongdanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -465,12 +490,13 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHuongDan;
+    private javax.swing.JMenuItem btnHuongdan;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -483,7 +509,6 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -556,8 +581,8 @@ public class MainMenu extends javax.swing.JFrame {
         //huongdan
         String globe = "Globe.png";
         ImageIcon Globe = iconInput(globe, 20, 20);
-        jButton6.setIcon(Globe);
-        jMenuItem13.setIcon(Globe);
+        btnHuongDan.setIcon(Globe);
+        btnHuongdan.setIcon(Globe);
         //quanliNhanVien
         String user = "User group.png";
         ImageIcon User = iconInput(user, 20, 20);
@@ -613,6 +638,15 @@ public class MainMenu extends javax.swing.JFrame {
             this.dispose();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    
+     void openWebsite() {
+        try {
+            Desktop.getDesktop().browse(new File("help/index.html").toURI());
+            //thư mục help đặt ngang hàng với src
+        } catch (IOException ex) {
+            DialogHelper.alert(this, "Không tìm thấy file hướng dẫn!");
         }
     }
 }

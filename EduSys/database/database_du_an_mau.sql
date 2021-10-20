@@ -27,6 +27,7 @@ ALTER TABLE ChuyenDe
 ALTER COLUMN Hinh NVARCHAR(100) NULL
 ALTER TABLE ChuyenDe
 ALTER COLUMN MoTa NVARCHAR(50) NULL
+
 create table KhoaHoc
 (
 	MaKH int identity(1,1) NOT NULL PRIMARY KEY,
@@ -70,6 +71,9 @@ create table HocVien
 )
 go
 
+ALTER TABLE HocVien
+ALTER COLUMN Diem float NULL
+
 select * from HocVien
 select * from ChuyenDe
 
@@ -109,13 +113,18 @@ insert into HocVien(MaKH, MaNH, Diem) values (1, 'NH01', 9),
 insert into HocVien(MaKH, MaNH, Diem) values (3, 'NH03', 9), 
 											(4, 'NH04', 10)
 
-insert into HocVien(MaKH, MaNH, Diem) values (3, 'NH01', 9), 
+insert into HocVien(MaKH, MaNH, Diem) values (3, 'NH01'), 
 											(2, 'NH04', 10)
+
+	INSERT INTO HocVien (MaKH, MaNH,Diem) VALUES (3, 'NH01',null)
+
 select * from NguoiHoc
 
 select * from KhoaHoc
 
 select * from HocVien
+UPDATE HocVien SET MaKH=?, MaNH=?, Diem=? WHERE MaHV=?
+
 	------ nhan vien -------------
 --Thêm mới
 	INSERT INTO NhanVien (MaNV, MatKhau, HoTen, VaiTro) VALUES (?, ?, ?, ?)
@@ -167,6 +176,7 @@ select * from HocVien
 ------ hoc vien -------------
 --Thêm mới
 	INSERT INTO HocVien (MaKH, MaNH, Diem) VALUES (?, ?, ?)
+	INSERT INTO HocVien (MaKH, MaNH) VALUES (?, ?)
 --Cập nhật theo mã 
 	UPDATE HocVien SET MaKH=?, MaNH=?, Diem=? WHERE MaHV=?
 --Xóa theo mã 
